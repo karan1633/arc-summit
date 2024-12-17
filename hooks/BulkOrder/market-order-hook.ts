@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
-const useMarketOrder = ( formData:any, setFormData:any ) => {
+const useMarketOrder = (formData: any, setFormData: any) => {
   const [errMsgMarketOrder, setErrMsgMarketOrder] = useState<any>('');
-  
+
   // Function to add a new row to market order details table
   const addMarketOrderRow = () => {
     setErrMsgMarketOrder('');
     // Initialize qty as an array with 23 elements (to cover 22 sizes + 1 for 1 inch qty)
-    const initialQty = Array.from({ length: 24 }, () => ({
+    const initialQty = Array.from({ length: 23 }, () => ({
       qty: '',
       size: '',
     }));

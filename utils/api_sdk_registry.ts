@@ -31,6 +31,8 @@ const apiSdkRegistry: any = {
   'ready-to-dispatch-api': { version: '', method: 'update_soid_completed_status', entity: 'user_permission' },
   'delete-order-api': { version: '', method: 'delete_soid_and_child_item', entity: 'user_permission' },
   'order-reports-api': { version: '', method: 'sales_order_report_list', entity: 'sales_order_report' },
+  'bulk-quotation-api': { version: '', method: 'create_bulk_quotation', entity: 'order' },
+  'get-customer-name-api': { version: '', method: 'get_customer_name', entity: 'order' },
 };
 
 export default apiSdkRegistry;

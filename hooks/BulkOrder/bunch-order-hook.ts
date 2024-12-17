@@ -6,6 +6,9 @@ const useBunchOrder = (formData: any, setFormData: any) => {
   const [isBunchWeightDisabled, setIsBunchWeightDisabled] = useState<boolean>(false);
   const [perInchWeight, setPerInchWeight] = useState<any[]>([]);
   const [perInchLengthSize, setPerInchLengthSize] = useState<any[]>([]);
+  const [itemDetails, setItemDetails] = useState<any[]>([]);
+  const [itemSize, setItemSize] = useState<any[]>([]);
+
   // Function to add a new row to bunch order details table
   const addBunchOrderRow = () => {
     setErrMsgBunchOrder('');
@@ -34,67 +37,63 @@ const useBunchOrder = (formData: any, setFormData: any) => {
       bunchOrderDetails: prevState?.bunchOrderDetails.filter((_: any, i: number) => i !== index),
     }));
   };
-  // const fetchItemDetails = async (itemCode: string, index: number) => {
-  //   try {
-  //     const response = await fetch(
-  //       `${CONSTANTS.API_BASE_URL}/api/resource/Item/${itemCode}`
-  //     );
-  //     if (!response.ok) {
-  //       throw new Error("Failed to fetch Item data");
-  //     }
-  //     const data = await response.json();
 
-  //     const weightPerUnit = data?.data?.weight_per_unit;
-  //     const length = data?.data?.length;
+  const fetchItemDetails = async (itemCode: string, index: number) => {
+    try {
+      const response = await fetch(`${CONSTANTS.API_BASE_URL}/api/resource/Item/${itemCode}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch Item data');
+      }
+      const data = await response.json();
 
-  //     if (weightPerUnit !== undefined && length !== undefined) {
-  //       setItemDetails((prevDetails:any) => {
-  //         const newDetails = [...prevDetails, weightPerUnit];
-  //         // newDetails[index] = weightPerUnit;
-  //         return newDetails;
-  //       });
+      const weightPerUnit = data?.data?.weight_per_unit;
+      const length = data?.data?.length;
 
-  //       setItemSize((prevSizes:any) => {
-  //         const newSizes = [...prevSizes, length];
-  //         // newSizes[index] = length;
-  //         return newSizes;
-  //       });
+      if (weightPerUnit !== undefined && length !== undefined) {
+        setItemDetails((prevDetails: any) => {
+          const newDetails = [...prevDetails, weightPerUnit];
+          // newDetails[index] = weightPerUnit;
+          return newDetails;
+        });
 
-  //       const perInchWeightValue =
-  //         length !== 0 ? length / weightPerUnit : "0.000";
-  //       setPerInchWeight((prevWeights) => {
-  //         const newWeights = [...prevWeights, perInchWeightValue];
-  //         // newWeights[index] = perInchWeightValue;
-  //         return newWeights;
-  //       });
+        setItemSize((prevSizes: any) => {
+          const newSizes = [...prevSizes, length];
+          // newSizes[index] = length;
+          return newSizes;
+        });
 
-  //       const perInchLengthSize =
-  //         length !== 0 ? weightPerUnit / length : "0.000";
-  //       setPerInchLengthSize((prevWeights) => {
-  //         const newWeights = [...prevWeights, perInchLengthSize];
-  //         // newWeights[index] = perInchWeightValue;
-  //         return newWeights;
-  //       });
-  //     } else {
-  //       setItemDetails((prevDetails) => {
-  //         const newDetails = [...prevDetails, null];
-  //         // newDetails[index] = null;
-  //         return newDetails;
-  //       });
-  //       setItemSize((prevSizes) => {
-  //         const newSizes = [...prevSizes, null];
-  //         // newSizes[index] = null;
-  //         return newSizes;
-  //       });
-  //       setPerInchWeight((prevWeights) => {
-  //         const newWeights = [...prevWeights, "0.00"];
-  //         // newWeights[index] = "0.000";
-  //         return newWeights;
-  //       });
-  //     }
-  //   } catch (error) {
-  //   }
-  // };
+        const perInchWeightValue = length !== 0 ? length / weightPerUnit : '0.000';
+        setPerInchWeight((prevWeights) => {
+          const newWeights = [...prevWeights, perInchWeightValue];
+          // newWeights[index] = perInchWeightValue;
+          return newWeights;
+        });
+
+        const perInchLengthSize = length !== 0 ? weightPerUnit / length : '0.000';
+        setPerInchLengthSize((prevWeights) => {
+          const newWeights = [...prevWeights, perInchLengthSize];
+          // newWeights[index] = perInchWeightValue;
+          return newWeights;
+        });
+      } else {
+        setItemDetails((prevDetails: any) => {
+          const newDetails = [...prevDetails, null];
+          // newDetails[index] = null;
+          return newDetails;
+        });
+        setItemSize((prevSizes: any) => {
+          const newSizes = [...prevSizes, null];
+          // newSizes[index] = null;
+          return newSizes;
+        });
+        setPerInchWeight((prevWeights) => {
+          const newWeights = [...prevWeights, '0.00'];
+          // newWeights[index] = "0.000";
+          return newWeights;
+        });
+      }
+    } catch (error) {}
+  };
 
   const handleChangeBunchOrder = (e: React.ChangeEvent<HTMLInputElement>, index: number, key: string, subIndex?: number) => {
     const { value } = e.target;
@@ -216,6 +215,7 @@ const useBunchOrder = (formData: any, setFormData: any) => {
     deleteBunchOrderRow,
     handleChangeBunchOrder,
     isBunchWeightDisabled,
+    fetchItemDetails,
   };
 };
 
