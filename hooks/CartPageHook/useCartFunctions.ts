@@ -60,6 +60,7 @@ const useAddToCartHook = () => {
       dispatch(clearCart());
       toast.success('Order placed successfully!');
       setCartListingItems({});
+      localStorage.removeItem('cust_name');
     } else {
       toast.error('Failed to place order.');
     }
