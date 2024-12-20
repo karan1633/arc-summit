@@ -90,8 +90,9 @@ const useAddToCartHook = () => {
   };
 
   const updateCartData = async (custName: any, updatedPurity: any, setPurity: any) => {
+    const localPurity = localStorage.getItem('localPurity');
     const reqBody = {
-      purity: updatedPurity,
+      purity: updatedPurity || localPurity,
       customer_name: custName,
       quotation_id: quotation_Id,
     };
@@ -99,7 +100,7 @@ const useAddToCartHook = () => {
     if (updateCustName?.status === 200) {
       toast.success(' updated successfully!');
       setPurity(updatedPurity);
-      localStorage.setItem('locaalPurity', updatedPurity);
+      localStorage.setItem('localPurity', updatedPurity);
     } else {
       toast.error('Failed to Upadte');
     }
