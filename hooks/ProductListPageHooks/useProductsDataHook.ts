@@ -5,6 +5,7 @@ import fetchProductListingFromAPI from '../../services/api/product-listing-page-
 import { CONSTANTS } from '../../services/config/app-config';
 import { get_access_token } from '../../store/slices/auth/token-login-slice';
 import useHandleStateUpdate from '../GeneralHooks/handle-state-update-hook';
+import fetchSearchDataAPI from '../../services/api/general-apis/search-api';
 
 const useProductListing = () => {
   const { isLoading, setIsLoading, errorMessage, setErrMessage }: any = useHandleStateUpdate();
@@ -41,7 +42,16 @@ const useProductListing = () => {
   };
 
   const handleFilterSearchBtn: any = () => {
-    router.push({ query: { ...query, search_text: searchFilterValue } });
+    // router.push({ query: { ...query, search_text: searchFilterValue } });
+    const getSearchData = async () => {
+      const searchAPIRes = await fetchSearchDataAPI(SUMMIT_APP_CONFIG, TokenFromStore?.token, searchFilterValue);
+      if (searchAPIRes?.status === 200 && searchAPIRes?.data?.message?.data?.length > 0) {
+        const saveProduct = searchAPIRes?.data?.message?.data[0]?.product;
+        // console.log('getSearchData', saveProduct);
+        router.push(`/${saveProduct}`);
+      }
+    };
+    getSearchData();
   };
 
   const handleToggleProductsListingView = (view_value?: any) => {
