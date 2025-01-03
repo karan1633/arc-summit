@@ -47,7 +47,6 @@ const useProductListing = () => {
       const searchAPIRes = await fetchSearchDataAPI(SUMMIT_APP_CONFIG, TokenFromStore?.token, searchFilterValue);
       if (searchAPIRes?.status === 200 && searchAPIRes?.data?.message?.data?.length > 0) {
         const saveProduct = searchAPIRes?.data?.message?.data[0]?.product;
-        // console.log('getSearchData', saveProduct);
         router.push(`/${saveProduct}`);
       }
     };
