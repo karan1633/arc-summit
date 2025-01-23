@@ -27,6 +27,7 @@ const UserRoleFetch = async (appConfig: APP_CONFIG, token: any) => {
       if (Object.keys(response)?.length > 0) {
         localStorage.setItem('isDealer', response.is_dealer);
         localStorage.setItem('isSuperAdmin', response.is_superadmin);
+        localStorage.setItem('isCatalogUser', response.is_catalog_user);
       }
     })
     .catch((err: any) => {
