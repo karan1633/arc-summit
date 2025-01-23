@@ -56,16 +56,15 @@ const useAddToCartHook = () => {
   const placeOrderAPIFunc = async (params: any, setCartListingItems: any) => {
     const placeOrder = await postPlaceOrderAPI(ARC_APP_CONFIG, params, tokenFromStore?.token);
     if (placeOrder?.status === 200) {
-      router.push('/order-history');
+      if (placeOrder?.data?.message?.msg === 'success') {
+        dispatch(clearCart());
+        toast.success('Order placed successfully!');
+        setCartListingItems({});
+        localStorage.removeItem('cust_name');
+      } else {
+        toast.error(placeOrder?.data?.message?.error);
+      }
     }
-    // if (placeOrder?.data?.message?.msg === 'success') {
-    //   dispatch(clearCart());
-    //   toast.success('Order placed successfully!');
-    //   setCartListingItems({});
-    //   localStorage.removeItem('cust_name');
-    // } else {
-    //   toast.error('Failed to place order.');
-    // }
   };
   const RemoveItemCartAPIFunc = async (params: any, setCartListingItems: any) => {
     setDisableRemove(true);
