@@ -1,8 +1,33 @@
+import { useRouter } from 'next/router';
 import ProductDetailMaster from '../../../../components/ProductDetailComponents/ProductDetailMaster';
 import MetaTag from '../../../../services/api/general-apis/meta-tag-api';
 import { CONSTANTS } from '../../../../services/config/app-config';
+import { returnLastPageViewedData, setRecentPageData } from '../../../../utils/get-last-page-viewed-data';
+import { useEffect } from 'react';
+import { pageViewTracker } from '../../../../utils/socket-functions';
 
 const Index = ({ metaData }: any) => {
+  const { query }: any = useRouter();
+
+  const getLastViewedPage = returnLastPageViewedData();
+  setRecentPageData('Product Page', query.productId);
+
+  const userName = localStorage.getItem('party_name');
+
+  useEffect(() => {
+    const userObj = {
+      name: userName,
+      phone: '',
+    };
+    pageViewTracker(
+      'Product Page',
+      query?.productId,
+      'Page View',
+      getLastViewedPage?.reference_type,
+      getLastViewedPage?.reference_id,
+      userObj
+    );
+  }, []);
   return (
     <div>
       <ProductDetailMaster />

@@ -54,5 +54,5 @@ export function pageViewTracker(
     reference_type: reference_type,
     reference_id: reference_id,
   };
-  clientSocketInstance.emit('catalog-page-visit', pageData);
+  clientSocketInstance.emit('page-visit', pageData);
 }

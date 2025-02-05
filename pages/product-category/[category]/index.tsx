@@ -2,8 +2,33 @@ import MetaTag from '../../../services/api/general-apis/meta-tag-api';
 import { CONSTANTS } from '../../../services/config/app-config';
 import ProductListingMaster from '../../../components/ProductListingComponents/ProductListingMaster';
 import PageMetaData from '../../../components/PageMetaData/PageMetaData';
+import { useRouter } from 'next/router';
+import { returnLastPageViewedData, setRecentPageData } from '../../../utils/get-last-page-viewed-data';
+import { useEffect } from 'react';
+import { pageViewTracker } from '../../../utils/socket-functions';
 
 const Index = ({ metaData }: any) => {
+  const { query }: any = useRouter();
+
+  const getLastViewedPage = returnLastPageViewedData();
+  setRecentPageData('Products List Page', query.category);
+
+  const userName = localStorage.getItem('party_name');
+
+  useEffect(() => {
+    const userObj = {
+      name: userName,
+      phone: '',
+    };
+    pageViewTracker(
+      'Products List Page',
+      query?.category,
+      'Page View',
+      getLastViewedPage?.reference_type,
+      getLastViewedPage?.reference_id,
+      userObj
+    );
+  }, []);
   return (
     <>
       {CONSTANTS.ENABLE_META_TAGS && <PageMetaData meta_data={metaData} />}
