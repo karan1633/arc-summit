@@ -5,7 +5,7 @@ import PageMetaData from '../../../components/PageMetaData/PageMetaData';
 import { useRouter } from 'next/router';
 import { returnLastPageViewedData, setRecentPageData } from '../../../utils/get-last-page-viewed-data';
 import { useEffect } from 'react';
-import { pageViewTracker } from '../../../utils/socket-functions';
+import { eventTracker } from '../../../utils/socket-functions';
 
 const Index = ({ metaData }: any) => {
   const { query }: any = useRouter();
@@ -20,14 +20,7 @@ const Index = ({ metaData }: any) => {
       name: userName,
       phone: '',
     };
-    pageViewTracker(
-      'Products List Page',
-      query?.category,
-      'Page View',
-      getLastViewedPage?.reference_type,
-      getLastViewedPage?.reference_id,
-      userObj
-    );
+    eventTracker('Category', query?.category, 'Page View', getLastViewedPage?.reference_type, getLastViewedPage?.reference_id, userObj);
   }, []);
   return (
     <>

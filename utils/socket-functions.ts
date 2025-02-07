@@ -37,7 +37,7 @@ export function catalogPageVisit(catalogName: string, userContactDetails: UserDa
 //   });
 // }
 
-export function pageViewTracker(
+export function eventTracker(
   page_type: string,
   page_id: string,
   action: string,
@@ -54,5 +54,5 @@ export function pageViewTracker(
     reference_type: reference_type,
     reference_id: reference_id,
   };
-  clientSocketInstance.emit('page-visit', pageData);
+  clientSocketInstance.emit('user-event', pageData);
 }

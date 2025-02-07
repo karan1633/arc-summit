@@ -5,7 +5,7 @@ import MetaTag from '../../../services/api/general-apis/meta-tag-api';
 import { CONSTANTS } from '../../../services/config/app-config';
 import { returnLastPageViewedData, setRecentPageData } from '../../../utils/get-last-page-viewed-data';
 import { useEffect } from 'react';
-import { pageViewTracker } from '../../../utils/socket-functions';
+import { eventTracker } from '../../../utils/socket-functions';
 
 const Index = ({ metaData }: any) => {
   const { query }: any = useRouter();
@@ -18,7 +18,7 @@ const Index = ({ metaData }: any) => {
       name: userName,
       phone: '',
     };
-    pageViewTracker('Catalog', query?.category, 'Page View', getLastViewedPage?.reference_type, getLastViewedPage?.reference_id, userObj);
+    eventTracker('Catalog', query?.category, 'Page View', getLastViewedPage?.reference_type, getLastViewedPage?.reference_id, userObj);
   }, []);
 
   return (
