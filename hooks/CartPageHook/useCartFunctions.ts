@@ -42,7 +42,7 @@ const useAddToCartHook = () => {
   const addToCartItem = async (params: any, setCartListingItems?: any) => {
     const postDataInCart = await PostAddToCartAPI(ARC_APP_CONFIG, params, tokenFromStore?.token);
     if (postDataInCart?.status === 200 && postDataInCart?.data?.message?.msg === 'success') {
-      dispatch(addItemToCart(params?.item_code));
+      // dispatch(addItemToCart(params?.item_code));
       if (setCartListingItems) {
         getCartList(setCartListingItems);
         toast.success('Product updated successfully!');
@@ -69,9 +69,9 @@ const useAddToCartHook = () => {
   };
   const RemoveItemCartAPIFunc = async (params: any, setCartListingItems: any) => {
     setDisableRemove(true);
-    const removeCartfunc = await DeleteItemFromCart(SUMMIT_APP_CONFIG, params, tokenFromStore?.token);
+    const removeCartfunc = await DeleteItemFromCart(ARC_APP_CONFIG, params, tokenFromStore?.token);
     if (removeCartfunc?.data?.message?.msg === 'success') {
-      dispatch(removeItemFromCart(params?.item_code));
+      // dispatch(removeItemFromCart(params?.item_code));
       toast.success('Product removed from cart successfully!');
       getCartList(setCartListingItems);
       setDisableRemove(false);
