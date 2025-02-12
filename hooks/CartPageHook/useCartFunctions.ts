@@ -68,9 +68,9 @@ const useAddToCartHook = () => {
   };
   const RemoveItemCartAPIFunc = async (params: any, setCartListingItems: any) => {
     setDisableRemove(true);
-    const removeCartfunc = await DeleteItemFromCart(SUMMIT_APP_CONFIG, params, tokenFromStore?.token);
+    const removeCartfunc = await DeleteItemFromCart(ARC_APP_CONFIG, params, tokenFromStore?.token);
     if (removeCartfunc?.data?.message?.msg === 'success') {
-      dispatch(removeItemFromCart(params?.item_code));
+      // dispatch(removeItemFromCart(params?.item_code));
       toast.success('Product removed from cart successfully!');
       getCartList(setCartListingItems);
       setDisableRemove(false);
