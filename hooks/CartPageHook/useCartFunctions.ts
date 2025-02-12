@@ -39,8 +39,9 @@ const useAddToCartHook = () => {
       return;
     }
   };
-  const addToCartItem = async (params: any, setCartListingItems?: any) => {
-    const postDataInCart = await PostAddToCartAPI(ARC_APP_CONFIG, params, tokenFromStore?.token);
+  const addToCartItem = async (params: any, setCartListingItems?: any, socketData?: any) => {
+    const socketInfo = { ...socketData, action: 'Add to Cart' };
+    const postDataInCart = await PostAddToCartAPI(ARC_APP_CONFIG, params, tokenFromStore?.token, socketInfo);
     if (postDataInCart?.status === 200 && postDataInCart?.data?.message?.msg === 'success') {
       dispatch(addItemToCart(params?.item_code));
       if (setCartListingItems) {

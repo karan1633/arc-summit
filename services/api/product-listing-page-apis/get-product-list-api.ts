@@ -6,7 +6,7 @@ const fetchProductListingFromAPI = async (appName: any, query: any, token: any) 
   let response: any;
   let page_no: number | undefined;
   let limit: number | undefined;
-  let socketInfo: SocketInfoTypes = { page_type: '', page_id: '' };
+  let socketInfo: SocketInfoTypes = { page_type: '', page_id: '', action: '' };
 
   // Determine the page number and limit based on the pagination method
   if (CONSTANTS.SHOW_MORE_ITEMS === 'load-more') {
@@ -54,6 +54,7 @@ const fetchProductListingFromAPI = async (appName: any, query: any, token: any) 
   if (query.router_origin === 'product-category') {
     socketInfo.page_type = 'Category';
     socketInfo.page_id = category;
+    socketInfo.action = 'Page View';
     additionalParams = {
       ...additionalParams,
       category,
@@ -62,6 +63,7 @@ const fetchProductListingFromAPI = async (appName: any, query: any, token: any) 
   } else if (query.router_origin === 'catalog') {
     socketInfo.page_type = 'Catalog';
     socketInfo.page_id = category;
+    socketInfo.action = 'Page View';
     additionalParams = {
       ...additionalParams,
       catalog_slug: category,

@@ -39,7 +39,6 @@ export const executeGETAPI = async (
   path?: any,
   socketInfo?: any
 ): Promise<any> => {
-  console.log('socketInfo', socketInfo);
   let baseURL: string;
   let storeParams: any;
   if (frappeAppConfig) {
@@ -86,7 +85,7 @@ export const executeGETAPI = async (
   return response;
 };
 
-export const executePOSTAPI = async (frappeAppConfig: APP_CONFIG, apiName: string, apiBody: any, token?: any) => {
+export const executePOSTAPI = async (frappeAppConfig: APP_CONFIG, apiName: string, apiBody: any, token?: any, socketInfo?: any) => {
   /* GET all the required information about frappe app i.e it's version, method and entity.*/
   const { sdkVersion, method, entity } = getVME(frappeAppConfig, apiName);
   const body = {
@@ -97,6 +96,19 @@ export const executePOSTAPI = async (frappeAppConfig: APP_CONFIG, apiName: strin
   };
   const url: string = `${CONSTANTS.API_BASE_URL}${frappeAppConfig.app_name}`;
   const response = await callPostAPI(url, body, token);
+
+  // Call the Socket Event
+  if (socketInfo && socketInfo?.page_type !== '') {
+    const getSocketAdditionalData = socketInfo ? returnSocketAdditionalData(socketInfo) : {};
+    const socketEventAdditionalData = {
+      ...socketInfo,
+      ...getSocketAdditionalData,
+    };
+    if (Object.keys(socketEventAdditionalData)?.length > 0) {
+      setTimeout(() => emitSocketEvent(socketEventAdditionalData), 0); // Ensures it runs asynchronously
+    }
+  }
+
   return response;
 };
 

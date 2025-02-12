@@ -1,33 +1,25 @@
-import { useRouter } from 'next/router';
-import ProductDetailMaster from '../../../../components/ProductDetailComponents/ProductDetailMaster';
-import MetaTag from '../../../../services/api/general-apis/meta-tag-api';
-import { CONSTANTS } from '../../../../services/config/app-config';
-import { returnLastPageViewedData, setRecentPageData } from '../../../../utils/get-last-page-viewed-data';
 import { useEffect } from 'react';
-import { pageViewTracker } from '../../../../utils/socket-functions';
+import { CONSTANTS } from '../../../../services/config/app-config';
+import MetaTag from '../../../../services/api/general-apis/meta-tag-api';
+import { useHandleClientInteractivity } from '../../../../hooks/SocketHooks/useHandleClientInteractivity';
+import ProductDetailMaster from '../../../../components/ProductDetailComponents/ProductDetailMaster';
 
 const Index = ({ metaData }: any) => {
-  const { query }: any = useRouter();
-
-  const getLastViewedPage = returnLastPageViewedData();
-  setRecentPageData('Product Page', query.productId);
-
-  const userName = localStorage.getItem('party_name');
+  const { userEventRegistered, handleVisibilityChange } = useHandleClientInteractivity();
+  useEffect(() => {
+    userEventRegistered();
+  }, []);
 
   useEffect(() => {
-    const userObj = {
-      name: userName,
-      phone: '',
+    function handleClientVisibility(documentVisibility: any) {
+      handleVisibilityChange(documentVisibility);
+    }
+    document.addEventListener('visibilitychange', () => handleClientVisibility(document.visibilityState));
+    return () => {
+      // window.removeEventListener('beforeunload', () => handleSiteInSleepMode(name));
+      document.removeEventListener('visibilitychange', handleClientVisibility);
     };
-    pageViewTracker(
-      'Product Page',
-      query?.productId,
-      'Page View',
-      getLastViewedPage?.reference_type,
-      getLastViewedPage?.reference_id,
-      userObj
-    );
-  }, []);
+  }, [document.visibilityState]);
   return (
     <div>
       <ProductDetailMaster />

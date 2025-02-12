@@ -14,7 +14,6 @@ export function eventTracker(
   user_data: UserData,
   is_active: boolean
 ) {
-  console.log('user_data', user_data);
   const pageData = {
     user_name: user_data?.name,
     phone: user_data?.phone,

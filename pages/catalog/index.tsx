@@ -1,14 +1,31 @@
-import CatalogListingMaster from '../../components/CatalogListingComponents/CatalogListingMaster';
-import PageMetaData from '../../components/PageMetaData/PageMetaData';
-import MetaTag from '../../services/api/general-apis/meta-tag-api';
+import { useEffect } from 'react';
 import { CONSTANTS } from '../../services/config/app-config';
+import MetaTag from '../../services/api/general-apis/meta-tag-api';
+import { useHandleClientInteractivity } from '../../hooks/SocketHooks/useHandleClientInteractivity';
+import CatalogProductListingMaster from '../../components/CatalogListingComponents/CatalogProductListingMaster';
+import PageMetaData from '../../components/PageMetaData/PageMetaData';
 
 const Index = ({ metaData }: any) => {
+  const { userEventRegistered, handleVisibilityChange } = useHandleClientInteractivity();
+  useEffect(() => {
+    userEventRegistered();
+  }, []);
+
+  useEffect(() => {
+    function handleClientVisibility(documentVisibility: any) {
+      handleVisibilityChange(documentVisibility);
+    }
+    document.addEventListener('visibilitychange', () => handleClientVisibility(document.visibilityState));
+    return () => {
+      // window.removeEventListener('beforeunload', () => handleSiteInSleepMode(name));
+      document.removeEventListener('visibilitychange', handleClientVisibility);
+    };
+  }, [document.visibilityState]);
   return (
     <>
       {CONSTANTS.ENABLE_META_TAGS && <PageMetaData meta_data={metaData} />}
       <>
-        <CatalogListingMaster />
+        <CatalogProductListingMaster />
       </>
     </>
   );

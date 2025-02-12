@@ -12,7 +12,5 @@ export const returnSocketAdditionalData = (socketInfo: SocketInfoTypes) => {
     name: userName,
     phone: '',
   };
-  if (socketInfo.page_type === 'Catalog') {
-    return { ...catalogPageEventData, ...referenceObj, user_data, is_active: true };
-  }
+  return { ...referenceObj, user_data, is_active: true };
 };
