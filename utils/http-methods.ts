@@ -2,6 +2,8 @@ import axios from 'axios';
 import fetchAPISDK from '../utils/get-api-sdk';
 import { CONSTANTS } from '../services/config/app-config';
 import APP_CONFIG from '../interfaces/app-config-interface';
+import { eventTracker } from './socket-functions';
+import { returnSocketAdditionalData } from './event-objects';
 
 /**
  * @function getVME - VME stands for Version, Method and Entity for that API function.
@@ -34,8 +36,10 @@ export const executeGETAPI = async (
   apiName: string,
   token: any | undefined,
   additionalParams: Record<string, any> = {},
-  path?: any
+  path?: any,
+  socketInfo?: any
 ): Promise<any> => {
+  console.log('socketInfo', socketInfo);
   let baseURL: string;
   let storeParams: any;
   if (frappeAppConfig) {
@@ -63,8 +67,22 @@ export const executeGETAPI = async (
   } else {
     throw new Error('Either frappeAppConfig or path must be provided.');
   }
+
   // Make the API call
   const response = await callGetAPI(`${baseURL}`, token);
+
+  // Call the Socket Event
+  if (socketInfo && socketInfo?.page_type !== '') {
+    const getSocketAdditionalData = socketInfo ? returnSocketAdditionalData(socketInfo) : {};
+    const socketEventAdditionalData = {
+      ...socketInfo,
+      ...getSocketAdditionalData,
+    };
+    if (Object.keys(socketEventAdditionalData)?.length > 0) {
+      setTimeout(() => emitSocketEvent(socketEventAdditionalData), 0); // Ensures it runs asynchronously
+    }
+  }
+
   return response;
 };
 
@@ -139,4 +157,9 @@ export const callPostAPI = async (url: string, body: any, token?: any) => {
       }
     });
   return response;
+};
+
+export const emitSocketEvent = (eventData: any) => {
+  const { page_type, page_id, action, reference_type, reference_id, user_data, is_active } = eventData;
+  eventTracker(page_type, page_id, action, reference_type, reference_id, user_data, is_active);
 };

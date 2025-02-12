@@ -1,10 +1,12 @@
 import { CONSTANTS } from '../../config/app-config';
 import { executeGETAPI } from '../../../utils/http-methods';
+import { SocketInfoTypes } from '../../../interfaces/socket-types';
 
 const fetchProductListingFromAPI = async (appName: any, query: any, token: any) => {
   let response: any;
   let page_no: number | undefined;
   let limit: number | undefined;
+  let socketInfo: SocketInfoTypes = { page_type: '', page_id: '' };
 
   // Determine the page number and limit based on the pagination method
   if (CONSTANTS.SHOW_MORE_ITEMS === 'load-more') {
@@ -50,17 +52,21 @@ const fetchProductListingFromAPI = async (appName: any, query: any, token: any) 
   };
 
   if (query.router_origin === 'product-category') {
+    socketInfo.page_type = 'Category';
+    socketInfo.page_id = category;
     additionalParams = {
       ...additionalParams,
       category,
     };
-    response = await executeGETAPI(appName, 'product-list-api', token, additionalParams);
+    response = await executeGETAPI(appName, 'product-list-api', token, additionalParams, undefined, socketInfo);
   } else if (query.router_origin === 'catalog') {
+    socketInfo.page_type = 'Catalog';
+    socketInfo.page_id = category;
     additionalParams = {
       ...additionalParams,
       catalog_slug: category,
     };
-    response = await executeGETAPI(appName, 'catalog-product-list-api', token, additionalParams);
+    response = await executeGETAPI(appName, 'catalog-product-list-api', token, additionalParams, undefined, socketInfo);
   } else if (query.router_origin === 'brand') {
     additionalParams = {
       ...additionalParams,
