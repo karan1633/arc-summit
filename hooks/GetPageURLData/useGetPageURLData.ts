@@ -12,6 +12,8 @@ const useGetPageURLData = () => {
     page_category = router.query?.category ? router.query?.category : '';
   } else if (base_page === 'product') {
     page_category = router.query?.productId ? router.query?.productId : '';
+  } else if (base_page === 'cart') {
+    page_category = 'cart';
   }
 
   // Below line will return page_type mapped with url
