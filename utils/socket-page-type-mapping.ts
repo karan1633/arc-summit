@@ -1,5 +1,6 @@
 const socketPageTypeMap = [
   { page: 'catalog', page_type: 'Catalog' },
+  { page: 'catalog-product', page_type: 'Product' },
   { page: 'product-category', page_type: 'Category' },
   { page: 'product', page_type: 'Product' },
   { page: 'cart', page_type: 'Cart' },

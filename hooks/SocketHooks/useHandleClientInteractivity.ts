@@ -10,14 +10,18 @@ export const useHandleClientInteractivity = () => {
     if (documentVisibility === 'hidden') {
       let socket_data: any = localStorage.getItem('socket_data');
       let parsedSocketData = JSON.parse(socket_data);
-      clientSocketInstance.emit('site-in-sleep-mode', {
-        uid: parsedSocketData[0]?.uid,
-      });
+      handleEmitEvent(parsedSocketData, 'site-in-sleep-mode');
     } else if (documentVisibility === 'visible') {
       let socket_data: any = localStorage.getItem('socket_data');
       let parsedSocketData = JSON.parse(socket_data);
-      clientSocketInstance.emit('site-occupied', {
-        uid: parsedSocketData[0]?.uid,
+      handleEmitEvent(parsedSocketData, 'site-occupied');
+    }
+  };
+
+  const handleEmitEvent = (socketData: any, eventName: string) => {
+    if (socketData?.length > 0) {
+      clientSocketInstance.emit(eventName, {
+        uid: socketData[0]?.uid,
       });
     }
   };

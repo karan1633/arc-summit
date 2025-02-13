@@ -2,7 +2,7 @@ import axios from 'axios';
 import fetchAPISDK from '../utils/get-api-sdk';
 import { CONSTANTS } from '../services/config/app-config';
 import APP_CONFIG from '../interfaces/app-config-interface';
-import { eventTracker } from './socket-functions';
+import { eventTracker, userMovingForward } from './socket-functions';
 import { returnSocketAdditionalData } from './event-objects';
 
 /**
@@ -78,6 +78,8 @@ export const executeGETAPI = async (
       ...getSocketAdditionalData,
     };
     if (Object.keys(socketEventAdditionalData)?.length > 0) {
+      const socketData = localStorage.getItem('socket_data');
+      handleSocketEvents(socketData);
       setTimeout(() => emitSocketEvent(socketEventAdditionalData), 0); // Ensures it runs asynchronously
     }
   }
@@ -104,6 +106,7 @@ export const executePOSTAPI = async (frappeAppConfig: APP_CONFIG, apiName: strin
       ...socketInfo,
       ...getSocketAdditionalData,
     };
+    console.log('getSocketAdditionalData', getSocketAdditionalData, socketEventAdditionalData);
     if (Object.keys(socketEventAdditionalData)?.length > 0) {
       setTimeout(() => emitSocketEvent(socketEventAdditionalData), 0); // Ensures it runs asynchronously
     }
@@ -171,7 +174,14 @@ export const callPostAPI = async (url: string, body: any, token?: any) => {
   return response;
 };
 
+async function handleSocketEvents(socketData: any, eventData?: any) {
+  if (socketData) {
+    await userMovingForward(JSON.parse(socketData)); // Wait for server acknowledgment
+  }
+}
+
 export const emitSocketEvent = (eventData: any) => {
+  console.log('emit sE', eventData);
   const { page_type, page_id, action, reference_type, reference_id, user_data, is_active } = eventData;
   eventTracker(page_type, page_id, action, reference_type, reference_id, user_data, is_active);
 };

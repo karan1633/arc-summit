@@ -10,7 +10,7 @@ const useGetPageURLData = () => {
   // Below line return query value from URL. For ex - /catalog/[category]?page=1
   if (base_page === 'product-category' || base_page === 'catalog') {
     page_category = router.query?.category ? router.query?.category : '';
-  } else if (base_page === 'product') {
+  } else if (base_page === 'product' || base_page === 'catalog-product') {
     page_category = router.query?.productId ? router.query?.productId : '';
   } else if (base_page === 'cart') {
     page_category = 'cart';
