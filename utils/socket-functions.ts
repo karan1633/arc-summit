@@ -31,7 +31,6 @@ export function eventTracker(
 export function userMovingForward(socketData: any) {
   return new Promise((resolve) => {
     clientSocketInstance.emit('client-new-page', { uid: socketData[0]?.uid }, (acknowledgment: any) => {
-      console.log('ackneledgement', acknowledgment);
       if (acknowledgment.success) {
         resolve(acknowledgment);
       } // Resolve the promise when the server acknowledges

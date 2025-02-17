@@ -14,5 +14,5 @@ export const returnSocketAdditionalData = (socketInfo: SocketInfoTypes) => {
     phone: '',
     emailID: userEmailId,
   };
-  return { ...referenceObj, user_data, is_active: true };
+  return { ...referenceObj, user_data, is_active: socketInfo?.action !== 'Add to Cart' ? true : false };
 };

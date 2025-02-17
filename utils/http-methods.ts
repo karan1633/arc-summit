@@ -106,7 +106,6 @@ export const executePOSTAPI = async (frappeAppConfig: APP_CONFIG, apiName: strin
       ...socketInfo,
       ...getSocketAdditionalData,
     };
-    console.log('getSocketAdditionalData', getSocketAdditionalData, socketEventAdditionalData);
     if (Object.keys(socketEventAdditionalData)?.length > 0) {
       setTimeout(() => emitSocketEvent(socketEventAdditionalData), 0); // Ensures it runs asynchronously
     }
@@ -181,7 +180,6 @@ async function handleSocketEvents(socketData: any, eventData?: any) {
 }
 
 export const emitSocketEvent = (eventData: any) => {
-  console.log('emit sE', eventData);
   const { page_type, page_id, action, reference_type, reference_id, user_data, is_active } = eventData;
   eventTracker(page_type, page_id, action, reference_type, reference_id, user_data, is_active);
 };
