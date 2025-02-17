@@ -2,8 +2,26 @@ import CatalogProductListingMaster from '../../../components/CatalogListingCompo
 import PageMetaData from '../../../components/PageMetaData/PageMetaData';
 import MetaTag from '../../../services/api/general-apis/meta-tag-api';
 import { CONSTANTS } from '../../../services/config/app-config';
+import { useEffect } from 'react';
+import { useHandleClientInteractivity } from '../../../hooks/SocketHooks/useHandleClientInteractivity';
 
 const Index = ({ metaData }: any) => {
+  const { userEventRegistered, handleVisibilityChange } = useHandleClientInteractivity();
+  useEffect(() => {
+    userEventRegistered();
+  }, []);
+
+  useEffect(() => {
+    function handleClientVisibility(documentVisibility: any) {
+      handleVisibilityChange(documentVisibility);
+    }
+    document.addEventListener('visibilitychange', () => handleClientVisibility(document.visibilityState));
+    return () => {
+      // window.removeEventListener('beforeunload', () => handleSiteInSleepMode(name));
+      document.removeEventListener('visibilitychange', handleClientVisibility);
+    };
+  }, [document.visibilityState]);
+
   return (
     <>
       {CONSTANTS.ENABLE_META_TAGS && <PageMetaData meta_data={metaData} />}

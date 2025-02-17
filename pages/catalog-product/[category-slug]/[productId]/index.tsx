@@ -1,8 +1,35 @@
-import ProductDetailMaster from '../../../../components/ProductDetailComponents/ProductDetailMaster';
+import { useEffect } from 'react';
 import MetaTag from '../../../../services/api/general-apis/meta-tag-api';
 import { CONSTANTS } from '../../../../services/config/app-config';
+import { useHandleClientInteractivity } from '../../../../hooks/SocketHooks/useHandleClientInteractivity';
+import ProductDetailMaster from '../../../../components/ProductDetailComponents/ProductDetailMaster';
+import { userMovingForward } from '../../../../utils/socket-functions';
 
 const Index = ({ metaData }: any) => {
+  const { userEventRegistered, handleVisibilityChange } = useHandleClientInteractivity();
+  const socketData = localStorage.getItem('socket_data');
+
+  useEffect(() => {
+    userEventRegistered();
+  }, []);
+
+  useEffect(() => {
+    function handleClientVisibility(documentVisibility: any) {
+      handleVisibilityChange(documentVisibility);
+    }
+    async function handleSocketEvents(socketData: any) {
+      if (socketData) {
+        await userMovingForward(JSON.parse(socketData)); // Wait for server acknowledgment
+      }
+    }
+    handleSocketEvents(socketData);
+    document.addEventListener('visibilitychange', () => handleClientVisibility(document.visibilityState));
+    document.addEventListener('popState', () => handleClientVisibility(document.visibilityState));
+    return () => {
+      // window.removeEventListener('beforeunload', () => handleSiteInSleepMode(name));
+      document.removeEventListener('visibilitychange', handleClientVisibility);
+    };
+  }, [document.visibilityState]);
   return (
     <div>
       <ProductDetailMaster />

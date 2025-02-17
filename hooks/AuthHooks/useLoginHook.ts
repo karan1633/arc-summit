@@ -29,12 +29,15 @@ const useLoginHook = () => {
     };
     const tokenData = await getTokenFromLoginAPI(SUMMIT_APP_CONFIG, userParams);
     if (tokenData?.msg === 'success' && tokenData?.data?.hasOwnProperty('access_token')) {
+      const pageHistory = { reference_type: 'Login', reference_id: 'login' };
       localStorage.setItem('isLoggedIn', 'true');
       dispatch(storeToken(tokenData?.data));
       localStorage.setItem('user', values.usr);
       localStorage.setItem('party_name', tokenData?.data?.full_name);
+      localStorage.setItem('party_id', tokenData?.data?.party_id);
+      localStorage.setItem('lastViewedPage', JSON.stringify(pageHistory));
       router.push('/');
-        toast.success('Login Successfully');
+      toast.success('Login Successfully');
     } else {
       toast.error('Invalid Credentials. Please try again.');
     }
