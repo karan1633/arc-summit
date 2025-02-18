@@ -28,17 +28,13 @@ const useProductDetail = () => {
     setIsLoading(true);
     try {
       const productDetailAPI: any = await fetchProductDetailData(SUMMIT_APP_CONFIG, requestParams, TokenFromStore?.token);
-      if (
-        productDetailAPI?.status === 200 &&
-        productDetailAPI?.data?.message?.msg === 'Success' &&
-        productDetailAPI?.data?.message?.data?.length
-      ) {
-        setProductDetailData(productDetailAPI?.data?.message?.data[0]);
-        if (productDetailAPI?.data?.message?.data[0]?.variant_of) {
-          setVariantOf(productDetailAPI?.data?.message?.data[0]?.variant_of);
+      if (productDetailAPI?.status === 200 && productDetailAPI?.data?.message?.msg === 'Success') {
+        setProductDetailData(productDetailAPI?.data?.message?.data);
+        if (productDetailAPI?.data?.message?.data?.variant_of) {
+          setVariantOf(productDetailAPI?.data?.message?.data?.variant_of);
 
-          if (productDetailAPI?.data?.message?.data[0]?.variant_of) {
-            fetchProductVariantDataAPI(productDetailAPI?.data?.message?.data[0]?.variant_of);
+          if (productDetailAPI?.data?.message?.data?.variant_of) {
+            fetchProductVariantDataAPI(productDetailAPI?.data?.message?.data?.variant_of);
           }
         } else {
           setProductVariantData([]);
