@@ -11,9 +11,6 @@ import { userMovingForward } from '../../utils/socket-functions';
 const Index = ({ metaData }: any) => {
   const { userEventRegistered, handleVisibilityChange } = useHandleClientInteractivity();
 
-  const getLastViewedPage = returnLastPageViewedData();
-  setRecentPageData('Catalogs List', 'catalog');
-
   const socketData = localStorage.getItem('socket_data');
 
   const userName = localStorage.getItem('party_name');
@@ -29,8 +26,8 @@ const Index = ({ metaData }: any) => {
       page_type: 'Catalogs List',
       page_id: 'catalog',
       action: 'Page View',
-      reference_type: getLastViewedPage?.reference_type,
-      reference_id: getLastViewedPage?.reference_id,
+      reference_type: 'Catalogs List',
+      reference_id: 'catalog',
       user_data: userObj,
       is_active: true,
     }; // Async function to ensure proper order
