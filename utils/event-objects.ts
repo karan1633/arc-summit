@@ -4,7 +4,7 @@ import { catalogPageEventData } from './socket-registry';
 
 export const returnSocketAdditionalData = (socketInfo: SocketInfoTypes) => {
   const getLastViewedPage = returnLastPageViewedData();
-  setRecentPageData(socketInfo.page_type, socketInfo.page_id);
+  // setRecentPageData(socketInfo.page_type, socketInfo.page_id);
   const referenceObj = { reference_type: getLastViewedPage?.reference_type, reference_id: getLastViewedPage?.reference_id };
   const userName = localStorage.getItem('party_name');
   const userEmailId = localStorage.getItem('user');

@@ -4,9 +4,13 @@ import MetaTag from '../../../services/api/general-apis/meta-tag-api';
 import { CONSTANTS } from '../../../services/config/app-config';
 import { useEffect } from 'react';
 import { useHandleClientInteractivity } from '../../../hooks/SocketHooks/useHandleClientInteractivity';
+import useGetPageURLData from '../../../hooks/GetPageURLData/useGetPageURLData';
+import { setRecentPageData } from '../../../utils/get-last-page-viewed-data';
 
 const Index = ({ metaData }: any) => {
+  const { page_category } = useGetPageURLData();
   const { userEventRegistered, handleVisibilityChange } = useHandleClientInteractivity();
+  setRecentPageData('Catalog', page_category);
   useEffect(() => {
     userEventRegistered();
   }, []);
