@@ -47,6 +47,7 @@ const useBulkOrder = () => {
         qty: [{ qty: '', size: '' }],
         description: '',
         uom: '',
+        bulk_order: '',
       },
     ],
     bunchOrderDetails: [
@@ -167,6 +168,7 @@ const useBulkOrder = () => {
           ),
           description: item.description,
           uom: formData?.purity,
+          bulk_order: item.bulk_order,
         }))
         .filter((item: any) => item.qty.length > 0);
       const mappedBunchItems = formData.bunchOrderDetails
@@ -215,6 +217,7 @@ const useBulkOrder = () => {
           estimate_bunch_weight: rest.estimate_bunch_weight,
           is_bunch: rest.is_bunch,
           bunch_weight: rest.bunch_weight,
+          bulk_order: rest.bulk_order,
         }));
       });
 
