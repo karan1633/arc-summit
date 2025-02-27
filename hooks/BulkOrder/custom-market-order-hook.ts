@@ -13,6 +13,7 @@ const useCustomMarketOrder = (formData: any, setFormData: any) => {
           item_code: '',
           qty: [{ qty: '', size: '' }],
           uom: '',
+          ...(formData?.color !== '' && { color: formData?.color }),
         },
       ],
     });
