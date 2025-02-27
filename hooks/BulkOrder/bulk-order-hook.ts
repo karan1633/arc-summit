@@ -169,7 +169,7 @@ const useBulkOrder = () => {
           ),
           description: item.description,
           uom: formData?.purity,
-          ...(item?.color !== '' && { color: item.color }),
+          color: item.color,
         }))
         .filter((item: any) => item.qty.length > 0);
       const mappedBunchItems = formData.bunchOrderDetails
@@ -217,7 +217,7 @@ const useBulkOrder = () => {
           estimate_bunch_weight: rest.estimate_bunch_weight,
           is_bunch: rest.is_bunch,
           bunch_weight: rest.bunch_weight,
-          ...(rest?.color !== '' && { color: rest.color }),
+          color: rest.color,
         }));
       });
 
