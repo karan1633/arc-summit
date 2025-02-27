@@ -33,6 +33,7 @@ const useBulkOrder = () => {
     customer: '',
     company: '',
     currency: '',
+    color: '',
     marketOrderDetails: [
       {
         item_code: '',
@@ -47,6 +48,7 @@ const useBulkOrder = () => {
         qty: [{ qty: '', size: '' }],
         description: '',
         uom: '',
+        color: '',
       },
     ],
     bunchOrderDetails: [
@@ -167,6 +169,7 @@ const useBulkOrder = () => {
           ),
           description: item.description,
           uom: formData?.purity,
+          ...(item?.color !== '' && { color: item.color }),
         }))
         .filter((item: any) => item.qty.length > 0);
       const mappedBunchItems = formData.bunchOrderDetails
@@ -210,11 +213,11 @@ const useBulkOrder = () => {
           ],
           description: rest.description,
           uom: rest.uom || formData.purity,
-
           weight_per_unit: '',
           estimate_bunch_weight: rest.estimate_bunch_weight,
           is_bunch: rest.is_bunch,
           bunch_weight: rest.bunch_weight,
+          ...(rest?.color !== '' && { color: rest.color }),
         }));
       });
 
@@ -240,7 +243,6 @@ const useBulkOrder = () => {
         user: users,
         items: mappedItemsAllArray,
       };
-
       const postBulkQuotation = await PostBulkQuotationAPI(ARC_APP_CONFIG, data, TokenFromStore?.token); // Call PostCartAPI
 
       if (postBulkQuotation?.data?.message?.msg === 'success') {
