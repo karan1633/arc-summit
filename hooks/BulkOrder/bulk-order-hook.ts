@@ -79,8 +79,17 @@ const useBulkOrder = () => {
   // Function to handle changes in input fields
   const handleChange = (e: any) => {
     const { name, value } = e?.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prevFormData: any) => {
+      const updatedData = { ...prevFormData, [name]: value };
+      if (name === 'color') {
+        updatedData.customMarketOrderDetails = prevFormData.customMarketOrderDetails.map((item: any) =>
+          item.color === '' ? { ...item, color: value } : item
+        );
+      }
+      return updatedData;
+    });
   };
+
   // Fuction to fetch purity values
   const getPurityValues = async () => {
     const url = `${CONSTANTS.API_BASE_URL}/api/resource/Purity`;
