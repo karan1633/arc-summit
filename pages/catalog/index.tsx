@@ -1,8 +1,7 @@
+import CatalogListingMaster from '../../components/CatalogListingComponents/CatalogListingMaster';
+import PageMetaData from '../../components/PageMetaData/PageMetaData';
 import MetaTag from '../../services/api/general-apis/meta-tag-api';
 import { CONSTANTS } from '../../services/config/app-config';
-import ProductListingMaster from '../../components/ProductListingComponents/ProductListingMaster';
-import PageMetaData from '../../components/PageMetaData/PageMetaData';
-import CatalogListingMaster from '../../components/CatalogListingComponents/CatalogListingMaster';
 
 const Index = ({ metaData }: any) => {
   return (
