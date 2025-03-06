@@ -33,6 +33,7 @@ const useBulkOrder = () => {
     customer: '',
     company: '',
     currency: '',
+    color: '',
     marketOrderDetails: [
       {
         item_code: '',
@@ -78,8 +79,17 @@ const useBulkOrder = () => {
   // Function to handle changes in input fields
   const handleChange = (e: any) => {
     const { name, value } = e?.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prevFormData: any) => {
+      const updatedData = { ...prevFormData, [name]: value };
+      if (name === 'color') {
+        updatedData.customMarketOrderDetails = prevFormData.customMarketOrderDetails.map((item: any) =>
+          item.color === '' ? { ...item, color: value } : item
+        );
+      }
+      return updatedData;
+    });
   };
+
   // Fuction to fetch purity values
   const getPurityValues = async () => {
     const url = `${CONSTANTS.API_BASE_URL}/api/resource/Purity`;
@@ -212,7 +222,6 @@ const useBulkOrder = () => {
           ],
           description: rest.description,
           uom: rest.uom || formData.purity,
-
           weight_per_unit: '',
           estimate_bunch_weight: rest.estimate_bunch_weight,
           is_bunch: rest.is_bunch,
@@ -243,7 +252,6 @@ const useBulkOrder = () => {
         user: users,
         items: mappedItemsAllArray,
       };
-
       const postBulkQuotation = await PostBulkQuotationAPI(ARC_APP_CONFIG, data, TokenFromStore?.token); // Call PostCartAPI
 
       if (postBulkQuotation?.data?.message?.msg === 'success') {
