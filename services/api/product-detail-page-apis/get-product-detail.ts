@@ -3,7 +3,6 @@ import { SocketInfoTypes } from '../../../interfaces/socket-types';
 import { executeGETAPI } from '../../../utils/http-methods';
 
 const fetchProductDetailData = async (appConfig: APP_CONFIG, requestParams: any, token: any) => {
-  console.log('fetch', requestParams);
   const additionalParams = { ...requestParams }; // Add additional parameters if needed
   let socketInfo: SocketInfoTypes = { page_type: 'Product', page_id: requestParams?.slug, action: 'Page View' };
   // Use executeGETAPI to handle GET Request logic
