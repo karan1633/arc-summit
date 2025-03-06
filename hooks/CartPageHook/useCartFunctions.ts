@@ -55,7 +55,12 @@ const useAddToCartHook = () => {
     }
   };
   const placeOrderAPIFunc = async (params: any, setCartListingItems: any, socketData?: any) => {
-    const apiParams = { order_id: params?.order_id, party_name: params?.party_name };
+    const apiParams = {
+      order_id: params?.order_id,
+      party_name: params?.party_name,
+      reference_page: params?.reference_page,
+      reference_id: params?.reference_id,
+    };
     const socketInfo = { ...socketData, action: 'Place Order' };
     const placeOrder = await postPlaceOrderAPI(ARC_APP_CONFIG, apiParams, tokenFromStore?.token, socketInfo);
     if (placeOrder?.status === 200) {
