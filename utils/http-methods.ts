@@ -2,6 +2,8 @@ import axios from 'axios';
 import fetchAPISDK from '../utils/get-api-sdk';
 import { CONSTANTS } from '../services/config/app-config';
 import APP_CONFIG from '../interfaces/app-config-interface';
+import { eventTracker, userMovingForward } from './socket-functions';
+import { returnSocketAdditionalData } from './event-objects';
 
 /**
  * @function getVME - VME stands for Version, Method and Entity for that API function.
@@ -34,7 +36,8 @@ export const executeGETAPI = async (
   apiName: string,
   token: any | undefined,
   additionalParams: Record<string, any> = {},
-  path?: any
+  path?: any,
+  socketInfo?: any
 ): Promise<any> => {
   let baseURL: string;
   let storeParams: any;
@@ -63,12 +66,28 @@ export const executeGETAPI = async (
   } else {
     throw new Error('Either frappeAppConfig or path must be provided.');
   }
+
   // Make the API call
   const response = await callGetAPI(`${baseURL}`, token);
+
+  // Call the Socket Event
+  if (socketInfo && socketInfo?.page_type !== '') {
+    const getSocketAdditionalData = socketInfo ? returnSocketAdditionalData(socketInfo) : {};
+    const socketEventAdditionalData = {
+      ...socketInfo,
+      ...getSocketAdditionalData,
+    };
+    if (Object.keys(socketEventAdditionalData)?.length > 0) {
+      const socketData = localStorage.getItem('socket_data');
+      handleSocketEvents(socketData);
+      setTimeout(() => emitSocketEvent(socketEventAdditionalData), 0); // Ensures it runs asynchronously
+    }
+  }
+
   return response;
 };
 
-export const executePOSTAPI = async (frappeAppConfig: APP_CONFIG, apiName: string, apiBody: any, token?: any) => {
+export const executePOSTAPI = async (frappeAppConfig: APP_CONFIG, apiName: string, apiBody: any, token?: any, socketInfo?: any) => {
   /* GET all the required information about frappe app i.e it's version, method and entity.*/
   const { sdkVersion, method, entity } = getVME(frappeAppConfig, apiName);
   const body = {
@@ -79,6 +98,19 @@ export const executePOSTAPI = async (frappeAppConfig: APP_CONFIG, apiName: strin
   };
   const url: string = `${CONSTANTS.API_BASE_URL}${frappeAppConfig.app_name}`;
   const response = await callPostAPI(url, body, token);
+
+  // Call the Socket Event
+  if (socketInfo && socketInfo?.page_type !== '') {
+    const getSocketAdditionalData = socketInfo ? returnSocketAdditionalData(socketInfo) : {};
+    const socketEventAdditionalData = {
+      ...socketInfo,
+      ...getSocketAdditionalData,
+    };
+    if (Object.keys(socketEventAdditionalData)?.length > 0) {
+      setTimeout(() => emitSocketEvent(socketEventAdditionalData), 0); // Ensures it runs asynchronously
+    }
+  }
+
   return response;
 };
 
@@ -139,4 +171,15 @@ export const callPostAPI = async (url: string, body: any, token?: any) => {
       }
     });
   return response;
+};
+
+async function handleSocketEvents(socketData: any, eventData?: any) {
+  if (socketData) {
+    await userMovingForward(JSON.parse(socketData)); // Wait for server acknowledgment
+  }
+}
+
+export const emitSocketEvent = (eventData: any) => {
+  const { page_type, page_id, action, reference_type, reference_id, user_data, is_active } = eventData;
+  eventTracker(page_type, page_id, action, reference_type, reference_id, user_data, is_active);
 };

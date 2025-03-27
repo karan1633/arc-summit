@@ -1,9 +1,36 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CONSTANTS } from '../services/config/app-config';
 import CartListing from '../components/Cart/CartListing';
 import MetaTag from '../services/api/general-apis/meta-tag-api';
+import { useHandleClientInteractivity } from '../hooks/SocketHooks/useHandleClientInteractivity';
+import { returnLastPageViewedData, setRecentPageData } from '../utils/get-last-page-viewed-data';
+import { emitSocketEvent } from '../utils/http-methods';
 
 const Cart = () => {
+  const { userEventRegistered, handleVisibilityChange } = useHandleClientInteractivity();
+
+  const getLastViewedPage = returnLastPageViewedData();
+  setRecentPageData('Cart', 'cart');
+
+  const userName = localStorage.getItem('party_name');
+
+  useEffect(() => {
+    const userObj = {
+      name: userName,
+      phone: '',
+    };
+    const eventData = {
+      page_type: 'Cart',
+      page_id: 'cart',
+      action: 'Page View',
+      reference_type: getLastViewedPage?.reference_type,
+      reference_id: getLastViewedPage?.reference_id,
+      user_data: userObj,
+      is_active: true,
+    };
+    emitSocketEvent(eventData);
+    userEventRegistered();
+  }, []);
   return (
     <>
       <CartListing />

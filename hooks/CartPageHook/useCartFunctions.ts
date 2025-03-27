@@ -39,8 +39,9 @@ const useAddToCartHook = () => {
       return;
     }
   };
-  const addToCartItem = async (params: any, setCartListingItems?: any) => {
-    const postDataInCart = await PostAddToCartAPI(ARC_APP_CONFIG, params, tokenFromStore?.token);
+  const addToCartItem = async (params: any, setCartListingItems?: any, socketData?: any) => {
+    const socketInfo = { ...socketData, action: 'Add to Cart' };
+    const postDataInCart = await PostAddToCartAPI(ARC_APP_CONFIG, params, tokenFromStore?.token, socketInfo);
     if (postDataInCart?.status === 200 && postDataInCart?.data?.message?.msg === 'success') {
       dispatch(addItemToCart(params?.item_code));
       if (setCartListingItems) {
@@ -53,19 +54,25 @@ const useAddToCartHook = () => {
       toast.error('Failed to add product to Cart.');
     }
   };
-  const placeOrderAPIFunc = async (params: any, setCartListingItems: any) => {
-    const placeOrder = await postPlaceOrderAPI(ARC_APP_CONFIG, params, tokenFromStore?.token);
+  const placeOrderAPIFunc = async (params: any, setCartListingItems: any, socketData?: any) => {
+    const apiParams = {
+      order_id: params?.order_id,
+      party_name: params?.party_name,
+      reference_page: params?.reference_page,
+      reference_id: params?.reference_id,
+    };
+    const socketInfo = { ...socketData, action: 'Place Order' };
+    const placeOrder = await postPlaceOrderAPI(ARC_APP_CONFIG, apiParams, tokenFromStore?.token, socketInfo);
     if (placeOrder?.status === 200) {
-      router.push('/order-history');
+      if (placeOrder?.data?.message?.msg === 'success') {
+        dispatch(clearCart());
+        toast.success('Order placed successfully!');
+        setCartListingItems({});
+        localStorage.removeItem('cust_name');
+      } else {
+        toast.error(placeOrder?.data?.message?.error);
+      }
     }
-    // if (placeOrder?.data?.message?.msg === 'success') {
-    //   dispatch(clearCart());
-    //   toast.success('Order placed successfully!');
-    //   setCartListingItems({});
-    //   localStorage.removeItem('cust_name');
-    // } else {
-    //   toast.error('Failed to place order.');
-    // }
   };
   const RemoveItemCartAPIFunc = async (params: any, setCartListingItems: any) => {
     setDisableRemove(true);
