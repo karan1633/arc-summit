@@ -66,7 +66,8 @@ const useAddToCartHook = () => {
     if (placeOrder?.status === 200) {
       if (placeOrder?.data?.message?.msg === 'success') {
         dispatch(clearCart());
-        toast.success('Order placed successfully!');
+        toast.success(placeOrder?.data?.message?.data);
+        router.push('/order-history');
         setCartListingItems({});
         localStorage.removeItem('cust_name');
       } else {
