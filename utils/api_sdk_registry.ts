@@ -23,6 +23,7 @@ const apiSdkRegistry: any = {
   'add-cart-api': { version: '', method: 'put_products', entity: 'cart' },
   'clear-cart-api': { version: '', method: 'clear_cart', entity: 'cart' },
   'remove-single-item-cart-api': { version: '', method: 'delete_products', entity: 'cart' },
+  'place-order-api': { version: '', method: 'place_order', entity: 'order' },
   'order-list-api': { version: '', method: 'get_orders', entity: 'order' },
   'order-detail-api': { version: '', method: 'get_order_detail', entity: 'order' },
   'user-permission-api': { version: '', method: 'ready_to_dispatch_permission', entity: 'user_permission' },
