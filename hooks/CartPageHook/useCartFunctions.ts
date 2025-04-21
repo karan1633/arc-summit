@@ -7,10 +7,10 @@ import fetchCartListingAPI from '../../services/api/cart-apis/cart-listing-api';
 import { DeleteClearCart } from '../../services/api/cart-apis/clear-cart-api';
 import postPlaceOrderAPI from '../../services/api/cart-apis/place-order-api';
 import { DeleteItemFromCart } from '../../services/api/cart-apis/remove-item-api';
+import updateCartDataAPI from '../../services/api/cart-apis/update-customer-name';
 import { CONSTANTS } from '../../services/config/app-config';
 import { get_access_token } from '../../store/slices/auth/token-login-slice';
-import { addCartList, addItemToCart, clearCart, removeItemFromCart, selectCart } from '../../store/slices/cart-slices/cart-local-slice';
-import updateCartDataAPI from '../../services/api/cart-apis/update-customer-name';
+import { addCartList, addItemToCart, clearCart, selectCart } from '../../store/slices/cart-slices/cart-local-slice';
 
 const useAddToCartHook = () => {
   const dispatch = useDispatch();
@@ -45,12 +45,12 @@ const useAddToCartHook = () => {
       dispatch(addItemToCart(params?.item_code));
       if (setCartListingItems) {
         getCartList(setCartListingItems);
-        toast.success('Product updated successfully!');
+        toast.success(postDataInCart?.data?.message?.data);
       } else {
-        toast.success('Product added to cart successfully!');
+        toast.success(postDataInCart?.data?.message?.data);
       }
     } else {
-      toast.error('Failed to add product to Cart.');
+      toast.error(postDataInCart?.data?.message?.error);
     }
   };
   const placeOrderAPIFunc = async (params: any, setCartListingItems: any) => {
@@ -76,7 +76,7 @@ const useAddToCartHook = () => {
       getCartList(setCartListingItems);
       setDisableRemove(false);
     } else {
-      toast.error('Failed to remove product from cart');
+      toast.error(removeCartfunc?.data?.message?.error);
       setDisableRemove(false);
     }
   };
