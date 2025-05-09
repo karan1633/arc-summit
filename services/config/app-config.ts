@@ -2,7 +2,6 @@ export const CONSTANTS = {
   API_BASE_URL: process.env.NEXT_PUBLIC_API_URL,
   SUMMIT_APP_CONFIG: {
     app_name: '/api/method/summitapp.sdk.api',
-
     version: 'v2',
   },
   ARC_APP_CONFIG: {
