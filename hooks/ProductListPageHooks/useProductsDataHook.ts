@@ -71,7 +71,7 @@ const useProductListing = () => {
         } else if (CONSTANTS.SHOW_MORE_ITEMS === 'paginate') {
           setProductListingData(productListDataAPI?.data?.message.data);
         }
-        setProductListTotalCount(productListDataAPI?.data?.total_count);
+        setProductListTotalCount(productListDataAPI?.data?.message?.total_count);
       } else {
         setProductListingData([]);
         setProductListTotalCount(0);
