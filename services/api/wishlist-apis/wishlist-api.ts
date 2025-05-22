@@ -1,8 +1,8 @@
 import { executeGETAPI, executePOSTAPI } from '../../../utils/http-methods';
 import APP_CONFIG from '../../../interfaces/app-config-interface';
 
-export const AddProductToWishlist = async (appConfig: APP_CONFIG, request: any, token: any) => {
-  let response: any = await executePOSTAPI(appConfig, 'add-item-to-wishlist-api', request, token);
+export const AddProductToWishlist = async (appConfig: APP_CONFIG, request: any, token: any, socketData?: any) => {
+  let response: any = await executePOSTAPI(appConfig, 'add-item-to-wishlist-api', request, token, socketData);
   return response;
 };
 
