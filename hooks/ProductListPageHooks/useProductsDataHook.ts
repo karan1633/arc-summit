@@ -75,11 +75,11 @@ const useProductListing = () => {
       } else {
         setProductListingData([]);
         setProductListTotalCount(0);
-        setErrMessage(productListDataAPI?.data?.error || 'An unknown error occured.');
+        setErrMessage(productListDataAPI?.data?.message.error || 'An unknown error occured.');
       }
     } catch (error) {
       setProductListingData([]);
-      setErrMessage(productListDataAPI?.data?.error || 'An unknown error occured.');
+      setErrMessage(productListDataAPI?.data?.message.error || 'An unknown error occured.');
     } finally {
       setIsLoading(false);
     }
