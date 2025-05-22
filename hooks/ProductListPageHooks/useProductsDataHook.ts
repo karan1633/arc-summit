@@ -65,13 +65,13 @@ const useProductListing = () => {
     setIsLoading(true);
     try {
       productListDataAPI = await fetchProductListingFromAPI(SUMMIT_APP_CONFIG, reqParams, TokenFromStore?.token);
-      if (productListDataAPI?.data?.msg === 'success' && productListDataAPI?.data?.data?.length > 0) {
+      if (productListDataAPI?.data?.message?.msg === 'success' && productListDataAPI?.data?.message?.data?.length > 0) {
         if (CONSTANTS.SHOW_MORE_ITEMS === 'load-more') {
-          setProductListingData((prevData: any) => [...prevData, ...productListDataAPI?.data?.data]);
+          setProductListingData((prevData: any) => [...prevData, ...productListDataAPI?.data?.message?.data]);
         } else if (CONSTANTS.SHOW_MORE_ITEMS === 'paginate') {
-          setProductListingData(productListDataAPI?.data?.data);
+          setProductListingData(productListDataAPI?.data?.message?.data);
         }
-        setProductListTotalCount(productListDataAPI?.data?.total_count);
+        setProductListTotalCount(productListDataAPI?.data?.message?.total_count);
       } else {
         setProductListingData([]);
         setProductListTotalCount(0);
