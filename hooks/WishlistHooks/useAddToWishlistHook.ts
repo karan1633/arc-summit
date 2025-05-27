@@ -9,11 +9,11 @@ const useAddToWishlist = () => {
   const { SUMMIT_APP_CONFIG } = CONSTANTS;
   const dispatch = useDispatch();
   const TokenFromStore: any = useSelector(get_access_token);
-  const handleAddToWishList = async (item: any) => {
+  const handleAddToWishList = async (item: any, socketData?: any) => {
     const params = {
       item_code: item?.name,
     };
-    const addItem = await AddProductToWishlist(SUMMIT_APP_CONFIG, params, TokenFromStore?.token);
+    const addItem = await AddProductToWishlist(SUMMIT_APP_CONFIG, params, TokenFromStore?.token, socketData);
     if (addItem?.data?.message?.msg === 'success') {
       dispatch(addItemToWishlist(item));
       toast.success('Product added to wishlist successfully!');

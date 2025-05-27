@@ -4,8 +4,13 @@ import { CONSTANTS } from '../../../services/config/app-config';
 import ProductListingMaster from '../../../components/ProductListingComponents/ProductListingMaster';
 import PageMetaData from '../../../components/PageMetaData/PageMetaData';
 import { useHandleClientInteractivity } from '../../../hooks/SocketHooks/useHandleClientInteractivity';
+import useGetPageURLData from '../../../hooks/GetPageURLData/useGetPageURLData';
+import { setRecentPageData } from '../../../utils/get-last-page-viewed-data';
 
 const Index = ({ metaData }: any) => {
+  const { page_category } = useGetPageURLData();
+  setRecentPageData('Category', page_category);
+
   const { userEventRegistered, handleVisibilityChange } = useHandleClientInteractivity();
   useEffect(() => {
     userEventRegistered();
