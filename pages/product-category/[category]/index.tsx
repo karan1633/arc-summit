@@ -22,10 +22,9 @@ const Index = ({ metaData }: any) => {
     }
     document.addEventListener('visibilitychange', () => handleClientVisibility(document.visibilityState));
     return () => {
-      // window.removeEventListener('beforeunload', () => handleSiteInSleepMode(name));
       document.removeEventListener('visibilitychange', handleClientVisibility);
     };
-  }, [document.visibilityState]);
+  }, []);
   return (
     <>
       {CONSTANTS.ENABLE_META_TAGS && <PageMetaData meta_data={metaData} />}
