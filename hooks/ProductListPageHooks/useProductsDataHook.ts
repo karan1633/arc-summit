@@ -60,7 +60,8 @@ const useProductListing = () => {
       setToggleProductListView('grid-view');
     }
   };
-  const fetchProductListDataAPI = async (reqParams: any) => {
+
+   const fetchProductListDataAPI = async (reqParams: any) => {
     let productListDataAPI: any;
     setIsLoading(true);
     try {
@@ -75,15 +76,18 @@ const useProductListing = () => {
       } else {
         setProductListingData([]);
         setProductListTotalCount(0);
-        setErrMessage(productListDataAPI?.data?.message?.error || 'An unknown error occured.');
+        setErrMessage(productListDataAPI?.data?.message.error || 'An unknown error occured.');
       }
     } catch (error) {
       setProductListingData([]);
-      setErrMessage(productListDataAPI?.data?.message?.error || 'An unknown error occured.');
+      setErrMessage(productListDataAPI?.data?.message.error || 'An unknown error occured.');
     } finally {
       setIsLoading(false);
     }
   };
+
+
+
 
   useEffect(() => {
     const catalogSlug = router.route.split('/')[1];
