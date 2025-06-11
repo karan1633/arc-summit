@@ -19,7 +19,7 @@ const Index = ({ metaData }: any) => {
       // window.removeEventListener('beforeunload', () => handleSiteInSleepMode(name));
       document.removeEventListener('visibilitychange', handleClientVisibility);
     };
-  }, [document.visibilityState]);
+  }, []);
   return (
     <div>
       <ProductDetailMaster />
