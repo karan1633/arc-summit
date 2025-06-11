@@ -20,7 +20,7 @@ const Index = ({ metaData }: any) => {
       // window.removeEventListener('beforeunload', () => handleSiteInSleepMode(name));
       document.removeEventListener('visibilitychange', handleClientVisibility);
     };
-  }, [document.visibilityState]);
+  }, []);
   return (
     <>
       {CONSTANTS.ENABLE_META_TAGS && <PageMetaData meta_data={metaData} />}
