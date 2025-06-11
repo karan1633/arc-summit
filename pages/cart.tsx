@@ -7,7 +7,7 @@ import { returnLastPageViewedData, setRecentPageData } from '../utils/get-last-p
 import { emitSocketEvent } from '../utils/http-methods';
 
 const Cart = () => {
-  const { userEventRegistered, handleVisibilityChange } = useHandleClientInteractivity();
+  const { userEventRegistered } = useHandleClientInteractivity();
 
   const getLastViewedPage = returnLastPageViewedData();
   setRecentPageData('Cart', 'cart');

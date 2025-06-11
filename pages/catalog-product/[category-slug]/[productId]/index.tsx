@@ -13,23 +13,6 @@ const Index = ({ metaData }: any) => {
     userEventRegistered();
   }, []);
 
-  useEffect(() => {
-    function handleClientVisibility(documentVisibility: any) {
-      handleVisibilityChange(documentVisibility);
-    }
-    async function handleSocketEvents(socketData: any) {
-      if (socketData) {
-        await userMovingForward(JSON.parse(socketData)); // Wait for server acknowledgment
-      }
-    }
-    handleSocketEvents(socketData);
-    document.addEventListener('visibilitychange', () => handleClientVisibility(document.visibilityState));
-    document.addEventListener('popState', () => handleClientVisibility(document.visibilityState));
-    return () => {
-      // window.removeEventListener('beforeunload', () => handleSiteInSleepMode(name));
-      document.removeEventListener('visibilitychange', handleClientVisibility);
-    };
-  }, []);
   return (
     <div>
       <ProductDetailMaster />
