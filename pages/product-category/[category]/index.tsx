@@ -16,15 +16,6 @@ const Index = ({ metaData }: any) => {
     userEventRegistered();
   }, []);
 
-  useEffect(() => {
-    function handleClientVisibility(documentVisibility: any) {
-      handleVisibilityChange(documentVisibility);
-    }
-    document.addEventListener('visibilitychange', () => handleClientVisibility(document.visibilityState));
-    return () => {
-      document.removeEventListener('visibilitychange', handleClientVisibility);
-    };
-  }, []);
   return (
     <>
       {CONSTANTS.ENABLE_META_TAGS && <PageMetaData meta_data={metaData} />}

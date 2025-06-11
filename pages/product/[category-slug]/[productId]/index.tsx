@@ -10,16 +10,6 @@ const Index = ({ metaData }: any) => {
     userEventRegistered();
   }, []);
 
-  useEffect(() => {
-    function handleClientVisibility(documentVisibility: any) {
-      handleVisibilityChange(documentVisibility);
-    }
-    document.addEventListener('visibilitychange', () => handleClientVisibility(document.visibilityState));
-    return () => {
-      // window.removeEventListener('beforeunload', () => handleSiteInSleepMode(name));
-      document.removeEventListener('visibilitychange', handleClientVisibility);
-    };
-  }, []);
   return (
     <div>
       <ProductDetailMaster />

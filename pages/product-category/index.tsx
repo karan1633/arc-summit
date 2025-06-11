@@ -10,17 +10,6 @@ const Index = ({ metaData }: any) => {
   useEffect(() => {
     userEventRegistered();
   }, []);
-
-  useEffect(() => {
-    function handleClientVisibility(documentVisibility: any) {
-      handleVisibilityChange(documentVisibility);
-    }
-    document.addEventListener('visibilitychange', () => handleClientVisibility(document.visibilityState));
-    return () => {
-      // window.removeEventListener('beforeunload', () => handleSiteInSleepMode(name));
-      document.removeEventListener('visibilitychange', handleClientVisibility);
-    };
-  }, []);
   return (
     <>
       {CONSTANTS.ENABLE_META_TAGS && <PageMetaData meta_data={metaData} />}
