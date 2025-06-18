@@ -10,9 +10,6 @@ export const useHandleClientInteractivity = () => {
   const handleVisibilityChange = (documentVisibility: any) => {
     if (documentVisibility === 'hidden') {
       let socket_data: any = localStorage.getItem('socket_data');
-      // let parsedSocketData = JSON.parse(socket_data);
-      // const {user_name, phone, email_id, page_type, page_id, reference_type, reference_id, action='disconnect'} = parsedSocketData;
-
       // new code
       const parsedSocketData = JSON.parse(socket_data);
 
@@ -30,14 +27,9 @@ export const useHandleClientInteractivity = () => {
         reference_id,
         action,
       };
-
-      // handleEmitEvent(parsedSocketData, 'site-in-sleep-mode');
-      // handleEmitEvent(userAnalyticsPayload, 'user-event');
       emitSocketEvent(userAnalyticsPayload);
     } else if (documentVisibility === 'visible') {
       let socket_data: any = localStorage.getItem('socket_data');
-      // let parsedSocketData = JSON.parse(socket_data);
-      // handleEmitEvent(parsedSocketData, 'site-occupied');
 
       const parsedSocketData = JSON.parse(socket_data);
 
@@ -56,8 +48,6 @@ export const useHandleClientInteractivity = () => {
         action,
       };
 
-      // handleEmitEvent(parsedSocketData, 'site-in-sleep-mode');
-      // handleEmitEvent(userAnalyticsPayload, 'user-event');
       emitSocketEvent(userAnalyticsPayload);
     }
   };
