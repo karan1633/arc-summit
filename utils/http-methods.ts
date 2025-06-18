@@ -174,9 +174,23 @@ export const callPostAPI = async (url: string, body: any, token?: any) => {
 };
 
 async function handleSocketEvents(socketData: any, eventData?: any) {
-  if (socketData) {
-    await userMovingForward(JSON.parse(socketData)); // Wait for server acknowledgment
-  }
+  const parsedSocketData = JSON.parse(socketData);
+
+  const { user_name, phone, email_id, page_type, page_id, reference_type, reference_id } = parsedSocketData[0];
+
+  // Set default or override action
+  const action = 'Disconnect';
+
+  // Create final payload object
+  const userAnalyticsPayload = {
+    user_data: { name: user_name, phone, emailID: email_id },
+    page_type,
+    page_id,
+    reference_type,
+    reference_id,
+    action,
+  };
+  await emitSocketEvent(userAnalyticsPayload);
 }
 
 export const emitSocketEvent = (eventData: any) => {
