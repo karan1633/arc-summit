@@ -98,7 +98,7 @@ const useAddToCartHook = () => {
       purity: updatedPurity || localPurity,
       customer_name: custName,
       quotation_id: quotation_Id,
-      color:selectedColor
+      colour:selectedColor
     };
     const updateCustName = await updateCartDataAPI(ARC_APP_CONFIG, reqBody, tokenFromStore?.token);
     if (updateCustName?.status === 200 && updateCustName.data.message.msg === "success") {
