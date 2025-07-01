@@ -64,31 +64,12 @@ const useOrderDetailHook = () => {
       return toast.warn('Reorder unsuccessful as your Cart is not empty');
     }
     const reOrderOrderDetail = orderData?.data?.map((ele: any) => ele?.orders);
-    // Declare variables outside
-    let itemCode: any;
-    let reorderPurity: any;
-    let orderDetails: any = [];
+   
     const paramsArray: any = [];
-    let colour: any, qty: any, size: any, weight: any;
-    // Accessing item_code if there is an extra array level
-    if (
-      Array.isArray(reOrderOrderDetail) &&
-      reOrderOrderDetail.length > 0 &&
-      Array.isArray(reOrderOrderDetail[0]) &&
-      reOrderOrderDetail[0].length > 0
-    ) {
-      itemCode = reOrderOrderDetail[0][0].item_code;
-      reorderPurity = reOrderOrderDetail[0][0].purity;
 
-      // Accessing the order array
-      orderDetails = reOrderOrderDetail[0][0].order;
-      if (Array.isArray(orderDetails) && orderDetails.length > 0) {
-        ({ colour, qty, size, weight } = orderDetails[0]);
-      }
-    } else {
-    }
     reOrderOrderDetail.forEach((productArray: any[]) => {
       productArray.forEach((product: any) => {
+
         const itemCode = product.item_code;
         const reorderPurity = product.purity;
 
@@ -120,7 +101,7 @@ const useOrderDetailHook = () => {
           purity: reorderPurity,
           qty_size_list: qtySizeList,
           colour: colour,
-          remark: '',
+          remark: product?.remark,
           user: user || null,
           wastage: '',
           party_name: partyName,
