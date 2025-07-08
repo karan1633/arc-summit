@@ -39,9 +39,11 @@ const useNavbar = () => {
   };
 
   const fetchNavbarDataAPI = async () => {
-    if (category?.items?.length !== 0) {
-      setNavbarData(category.items);
-    } else {
+    if (category?.items?.length > 0 && category?.items?.every((item: any) => item?.values?.length > 0)) {
+      setNavbarData(category?.items);
+      return
+    }
+    else {
       let navbarDataAPI: any;
       setIsLoading(true);
       try {
@@ -62,6 +64,7 @@ const useNavbar = () => {
       }
     }
   };
+
   useEffect(() => {
     fetchNavbarDataAPI();
   }, []);
