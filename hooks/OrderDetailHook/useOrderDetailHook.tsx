@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import useHandleStateUpdate from '../GeneralHooks/handle-state-update-hook';
-import getOrderDetailAPI from '../../services/api/order-detail-apis/order-detail-api';
-import { get_access_token } from '../../store/slices/auth/token-login-slice';
-import { CONSTANTS } from '../../services/config/app-config';
 import { deletOrderApi } from '../../services/api/order-apis/order-list-api';
-import { selectCart } from '../../store/slices/cart-slices/cart-local-slice';
-import { PostAddToCartAPI } from '../../services/api/cart-apis/add-to-cart-api';
+import getOrderDetailAPI from '../../services/api/order-detail-apis/order-detail-api';
 import { deleteOrderApi, getUserPermissionsAPI, readyToDispatchApi } from '../../services/api/order-detail-apis/order-update-api';
+import { PostReorderAPI } from '../../services/api/order-detail-apis/reorder-api';
+import { CONSTANTS } from '../../services/config/app-config';
+import { get_access_token } from '../../store/slices/auth/token-login-slice';
+import { selectCart } from '../../store/slices/cart-slices/cart-local-slice';
+import useHandleStateUpdate from '../GeneralHooks/handle-state-update-hook';
 
 const useOrderDetailHook = () => {
   const { query } = useRouter();
@@ -59,62 +59,16 @@ const useOrderDetailHook = () => {
   let user = localStorage.getItem('user');
   const partyName = localStorage.getItem('party_name');
 
-  const handleReorder = async (customerName: any) => {
+  const handleReorder = async () => {
     if (cartCount > 0) {
       return toast.warn('Reorder unsuccessful as your Cart is not empty');
     }
-    const reOrderOrderDetail = orderData?.data?.map((ele: any) => ele?.orders);
-   
-    const paramsArray: any = [];
 
-    reOrderOrderDetail.forEach((productArray: any[]) => {
-      productArray.forEach((product: any) => {
-
-        const itemCode = product.item_code;
-        const reorderPurity = product.purity;
-
-        // Accessing the order array
-        const orderDetails = product.order;
-
-        // Initialize variables for product details
-        let colour = '';
-        let qty = 0;
-        let size = '';
-        let weight = 0;
-
-        if (Array.isArray(orderDetails) && orderDetails.length > 0) {
-          // Initialize the qty_size_list array for this product
-
-          // Assuming the first element contains the necessary details
-          ({ colour, qty, size, weight } = orderDetails[0]);
-        }
-        const qtySizeList = orderDetails.map((order: any) => ({
-          quantity: order.qty,
-          size: order.size,
-          colour: order.colour,
-        }));
-
-        // Create params object for this product
-        const params = {
-          cust_name: editableCustomerName || customerName,
-          item_code: itemCode,
-          purity: reorderPurity,
-          qty_size_list: qtySizeList,
-          colour: colour,
-          remark: product?.remark,
-          user: user || null,
-          wastage: '',
-          party_name: partyName,
-        };
-
-        paramsArray.push(params);
-      });
-    });
-
-    for (const params of paramsArray) {
-      await PostAddToCartAPI(ARC_APP_CONFIG, params, tokenFromStore.token); // Call PostCartAPI
+    let reorderApi = await PostReorderAPI(ARC_APP_CONFIG, query?.orderId, tokenFromStore.token);
+    if (reorderApi?.data?.message?.msg === "success") {
+      router.push('/cart');
     }
-    router.push('/cart');
+
   };
 
   const handleShowButtons = async () => {
