@@ -75,6 +75,7 @@ const useFetchCartItems = () => {
     errorMessage,
     cartCount,
     purity,
+    fetchCartListingData
   };
 };
 export default useFetchCartItems;
