@@ -22,11 +22,21 @@ const useOrderListHook = () => {
         return 'Completed';
       } else if (query === 'cancelled-orders') {
         return 'Cancelled';
+      } else if (query === 'accepted-order') {
+        return 'Accepted';
+      } else if (query === 'planned-order') {
+        return 'Planned';
       } else {
         return '';
       }
     };
     const status: any = updateStatus(query?.orderStatus);
+
+
+
+
+
+
 
     /**
      * Fetches order listing data from the API using the given token and status.
