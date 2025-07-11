@@ -18,7 +18,7 @@ const useProductListing = () => {
   const [productListingData, setProductListingData] = useState<any>([]);
   const [productListTotalCount, setProductListTotalCount] = useState<number>(0);
   const [searchFilterValue, setSearchFilterValue] = useState<any>();
-  const [sortBy, setSortBy] = useState('latest');
+  const [sortBy, setSortBy] = useState('creation');
   const handleSortBy = (value: any) => {
     setSortBy(value);
     router.push({
@@ -61,7 +61,7 @@ const useProductListing = () => {
     }
   };
 
-   const fetchProductListDataAPI = async (reqParams: any) => {
+  const fetchProductListDataAPI = async (reqParams: any) => {
     let productListDataAPI: any;
     setIsLoading(true);
     try {
