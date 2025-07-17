@@ -8,7 +8,7 @@ import { CONSTANTS } from '../../services/config/app-config';
 import { storeToken } from '../../store/slices/auth/token-login-slice';
 
 const useLoginHook = () => {
-  const { SUMMIT_APP_CONFIG } = CONSTANTS;
+  const { ARC_APP_CONFIG } = CONSTANTS;
   const dispatch = useDispatch();
   const router = useRouter();
   const [loginForm, setLoginForm] = useState<TypeLoginForm>({ usr: '', pwd: '' });
@@ -27,7 +27,8 @@ const useLoginHook = () => {
       loginViaOTP: false,
       LoginViaGoogle: false,
     };
-    const tokenData = await getTokenFromLoginAPI(SUMMIT_APP_CONFIG, userParams);
+    const tokenData = await getTokenFromLoginAPI(ARC_APP_CONFIG, userParams);
+    console.log({tokenData}, "token aar")
     if (tokenData?.msg === 'success' && tokenData?.data?.hasOwnProperty('access_token')) {
       const pageHistory = { reference_type: 'Login', reference_id: 'login' };
       localStorage.setItem('isLoggedIn', 'true');

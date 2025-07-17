@@ -1,9 +1,12 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import fetchAPISDK from '../utils/get-api-sdk';
 import { CONSTANTS } from '../services/config/app-config';
 import APP_CONFIG from '../interfaces/app-config-interface';
 import { eventTracker, userMovingForward } from './socket-functions';
 import { returnSocketAdditionalData } from './event-objects';
+import splitToken from './split-token';
+import Router from 'next/router';
+
 
 /**
  * @function getVME - VME stands for Version, Method and Entity for that API function.
@@ -31,6 +34,8 @@ const getVME = (frappeAppConfig: APP_CONFIG, apiName: string) => {
  * @returns {Promise<any>} - The response from the API call.
  * @throws {Error} Throws an error if the API call fails.
  */
+
+
 export const executeGETAPI = async (
   frappeAppConfig: APP_CONFIG | undefined,
   apiName: string,
@@ -110,7 +115,7 @@ export const executePOSTAPI = async (frappeAppConfig: APP_CONFIG, apiName: strin
       setTimeout(() => emitSocketEvent(socketEventAdditionalData), 0); // Ensures it runs asynchronously
     }
   }
-
+  
   return response;
 };
 
@@ -119,7 +124,7 @@ export const callGetAPI = async (url: string, token?: any) => {
   const API_CONFIG = {
     headers: {
       Accept: 'application/json',
-      ...(token ? { Authorization: token } : {}),
+      ...(token ? { ...splitToken(token) } : {}),
     },
   };
   await axios
@@ -148,7 +153,7 @@ export const callPostAPI = async (url: string, body: any, token?: any) => {
   let response: any;
   const API_CONFIG = {
     headers: {
-      ...(token ? { Authorization: token } : {}),
+      ...(token ? { ...splitToken(token) } : {}),
     },
   };
   await axios
@@ -156,7 +161,11 @@ export const callPostAPI = async (url: string, body: any, token?: any) => {
       ...API_CONFIG,
       // timeout: 5000,
     })
-    .then((res: any) => {
+    .then((res: AxiosResponse) => {
+      if (res.status === 401) {
+        localStorage.clear()
+        Router.push('/login')
+      }
       response = res;
     })
     .catch((err: any) => {

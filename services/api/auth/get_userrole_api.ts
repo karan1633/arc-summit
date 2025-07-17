@@ -3,6 +3,7 @@ import { CONSTANTS } from '../../config/app-config';
 import APP_CONFIG from '../../../interfaces/app-config-interface';
 
 const UserRoleFetch = async (appConfig: APP_CONFIG, token: any) => {
+  const {access_token, unique_key} = token
   let response: any;
   const version = appConfig.version;
   const method = 'get_user_profile';
@@ -11,7 +12,8 @@ const UserRoleFetch = async (appConfig: APP_CONFIG, token: any) => {
 
   const config = {
     headers: {
-      Authorization: token,
+      Authorization: access_token,
+      "x-api-key":unique_key
     },
   };
 
