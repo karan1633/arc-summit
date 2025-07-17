@@ -11,3 +11,4 @@ const checkAuthorizedUser = () => {
 };
 
 export default checkAuthorizedUser;
+

@@ -42,7 +42,7 @@ const getAccessTokenFromAPI = async (appConfig: APP_CONFIG, loginParams: TypeLog
   const params = `?version=${version}&method=${method}&entity=${entity}&usr=${usr}&pwd=${pwd}`;
   await axios.post(`${CONSTANTS.API_BASE_URL}${apiSDKName}${params}`, undefined, config).then((res) => {
     response = res?.data?.message;
-    UserRoleGet(appConfig, res?.data?.message?.data?.access_token);
+    UserRoleGet(appConfig, res?.data?.message?.data );
   });
   return response;
 };
