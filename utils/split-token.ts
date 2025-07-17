@@ -5,7 +5,6 @@ const splitToken = (mergedToken: string)=>{
         return;
     }
     const [  ,  token , uniqueKey] = mergedToken.split(' ')
-    console.log({token, uniqueKey}, "split token")
     return { Authorization: `token ${token}`, "x-api-key": uniqueKey  };
 } 
 

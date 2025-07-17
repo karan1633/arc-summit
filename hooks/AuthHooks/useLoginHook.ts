@@ -28,7 +28,6 @@ const useLoginHook = () => {
       LoginViaGoogle: false,
     };
     const tokenData = await getTokenFromLoginAPI(ARC_APP_CONFIG, userParams);
-    console.log({tokenData}, "token aar")
     if (tokenData?.msg === 'success' && tokenData?.data?.hasOwnProperty('access_token')) {
       const pageHistory = { reference_type: 'Login', reference_id: 'login' };
       localStorage.setItem('isLoggedIn', 'true');
