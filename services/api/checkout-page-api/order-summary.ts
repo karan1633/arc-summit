@@ -7,7 +7,7 @@ const fetchOrderSummary = async (request: any) => {
   let response: any;
   let version = CONSTANTS.VERSION;
   let method = 'get_summary';
-  let entity = 'order';
+  let entity = 'sales_order';
   let id = request.quotationId;
   let params = `?version=${version}&method=${method}&entity=${entity}&id=${id}`;
 

@@ -18,7 +18,7 @@ const PlaceOrderApi = async (
 
   const version = CONSTANTS.VERSION;
   const method = 'place_order';
-  const entity = 'order';
+  const entity = 'sales_order';
 
   const vals = selectedState == 1 ? selectedState : '';
   const door_deliveryState = selectedState == 0 ? selectedState : '';

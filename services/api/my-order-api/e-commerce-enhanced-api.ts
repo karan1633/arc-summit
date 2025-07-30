@@ -6,7 +6,7 @@ const ECommerceEnhancedCodeApi = async (salesOrderId: any, token: any) => {
   let response: any;
   const version = CONSTANTS.VERSION;
   const method = 'get_order_details';
-  const entity = 'order';
+  const entity = 'sales_order';
 
   const params = `?version=${version}&method=${method}&entity=${entity}&order_id=${salesOrderId}`;
 
