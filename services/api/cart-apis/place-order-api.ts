@@ -6,7 +6,7 @@ const postPlaceOrderAPI: any = async (appConfig: APP_CONFIG, params: any, token?
   let response: any;
   let version = appConfig.version;
   const method = 'place_order';
-  const entity = 'order';
+  const entity = 'sales_order';
   const apiSDKName = appConfig.app_name;
   const url = `${CONSTANTS.API_BASE_URL}${apiSDKName}?version=${version}&method=${method}&entity=${entity}&order_id=${params?.order_id}&party_name=${params?.party_name}`;
 
