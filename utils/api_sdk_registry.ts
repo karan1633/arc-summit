@@ -35,6 +35,7 @@ const apiSdkRegistry: any = {
   'bulk-quotation-api': { version: '', method: 'create_bulk_quotation', entity: 'sales_order' },
   'get-customer-name-api': { version: '', method: 'get_customer_name', entity: 'sales_order' },
   'search-api': { version: 'v2', method: 'product_search', entity: 'product' },
+  'get-dashboard-api': { version: '', method: 'sales_order_report_list', entity: 'sales_order' },
 };
 
 export default apiSdkRegistry;
