@@ -13,56 +13,7 @@ const useDashBoard = () => {
   const [selectedPurity, setSelectedPurity] = useState('22KT');
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [errorMessage, setErrMessage] = useState<string>('');
-  const [data, setData] = useState([
-    {
-      report_name: 'Pending Orders',
-      link: 'pending-order',
-      total_qty: 4585,
-      total_weight: 12345.6531,
-      total_net_weight: 19117.26,
-      total_sales_orders: 24,
-    },
-    {
-      report_name: 'In Process Orders',
-      link: 'in-process-orders-report',
-      total_qty: 19490,
-      total_weight: 54556.611,
-      total_net_weight: 60688.91,
-      total_sales_orders: 79,
-    },
-    {
-      report_name: 'Dispatched Orders',
-      link: 'dispatched-orders-report',
-      total_qty: 0,
-      total_weight: 0,
-      total_net_weight: 0,
-      total_sales_orders: 0,
-    },
-    {
-      report_name: 'Due Date Orders',
-      link: 'due-date-reminder-report',
-      total_qty: 965,
-      total_weight: 1101.8611,
-      total_net_weight: 1634.65,
-      total_sales_orders: 6,
-    },
-    {
-      report_name: 'Late Orders',
-      link: 'late-orders-report',
-      total_qty: 16533,
-      total_weight: 33641.6203,
-      total_net_weight: 41910.41,
-      total_sales_orders: 63,
-    },
-    {
-      report_name: 'Review Dispatched Orders',
-      link: 'review-report',
-      total_qty: 0,
-      total_weight: 0,
-      total_net_weight: 0,
-      total_sales_orders: 0,
-    },
-  ]);
+  const [data, setData] = useState([]);
 
   const requestParams = {
     user: localStorage.getItem('user'),
@@ -77,7 +28,7 @@ const useDashBoard = () => {
       setData(data);
     } catch (error) {
       setErrMessage('Failed to fetch dashboard data.');
-      console.log('Error fetching dashboard data:', error);
+      // console.log('Error fetching dashboard data:', error);
     } finally {
       setIsLoading(true);
     }
@@ -109,16 +60,16 @@ const useDashBoard = () => {
   ];
 
   const handleCardClick = (link: string) => {
-    router.push(`reports/${link}`);
+    router.push(`${link}`);
   };
 
   const colorMap: any = {
     'Pending Orders': '#3b5998',
-    'In Process Orders': '#f48024',
+    'In Production Orders': '#f48024',
     'Dispatched Orders': '#4CAF50',
-    'Due Date Orders': '#FFD700',
-    'Late Orders': '#003366',
-    'Review Dispatched Orders': '#000080',
+    'Late Orders': '#FFD700',
+    'Due Date Orders': '#003366',
+    'Completed Orders': '#000080',
   };
   return {
     data,
@@ -127,7 +78,7 @@ const useDashBoard = () => {
     setSelectedPurity,
     colorMap,
     handleCardClick,
-    isLoading
+    isLoading,
   };
 };
 
