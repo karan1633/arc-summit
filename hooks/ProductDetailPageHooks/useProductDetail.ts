@@ -25,6 +25,7 @@ const useProductDetail = () => {
       item: query?.productId,
       slug: query?.productId,
       filter: query?.filter,
+      page: query?.page,
       currency: 'INR',
     };
     setIsLoading(true);
