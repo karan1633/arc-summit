@@ -24,6 +24,7 @@ const useProductDetail = () => {
     const requestParams = {
       item: query?.productId,
       slug: query?.productId,
+      filter: query?.filter,
       currency: 'INR',
     };
     setIsLoading(true);
