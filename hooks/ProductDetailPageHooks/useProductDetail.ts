@@ -9,6 +9,7 @@ import { CONSTANTS } from '../../services/config/app-config';
 
 const useProductDetail = () => {
   const { query } = useRouter();
+  console.log('query', query)
   const { isLoading, setIsLoading, errorMessage, setErrMessage }: any = useHandleStateUpdate();
   const { SUMMIT_APP_CONFIG }: any = CONSTANTS;
   // const currency_state_from_redux: any = useSelector(currency_selector_state);
@@ -24,6 +25,7 @@ const useProductDetail = () => {
     const requestParams = {
       item: query?.productId,
       slug: query?.productId,
+      filter: query?.filter,
       currency: 'INR',
     };
     setIsLoading(true);
