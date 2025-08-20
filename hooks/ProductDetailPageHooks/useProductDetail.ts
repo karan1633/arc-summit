@@ -24,6 +24,9 @@ const useProductDetail = () => {
     const requestParams = {
       item: query?.productId,
       slug: query?.productId,
+      filter: query?.filter,
+      page: query?.page,
+      offset: query?.offset,
       currency: 'INR',
     };
     setIsLoading(true);
