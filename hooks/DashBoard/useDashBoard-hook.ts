@@ -28,7 +28,6 @@ const useDashBoard = () => {
       setData(data);
     } catch (error) {
       setErrMessage('Failed to fetch dashboard data.');
-      // console.log('Error fetching dashboard data:', error);
     } finally {
       setIsLoading(true);
     }

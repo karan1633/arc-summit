@@ -13,7 +13,7 @@ const UserRoleFetch = async (appConfig: APP_CONFIG, token: any) => {
   const config = {
     headers: {
       Authorization: access_token,
-      "x-api-key":unique_key
+      "x-api-key": unique_key
     },
   };
 
