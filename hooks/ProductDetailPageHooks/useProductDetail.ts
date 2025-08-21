@@ -6,6 +6,8 @@ import fetchProductVariant from '../../services/api/product-detail-page-apis/get
 import { get_access_token } from '../../store/slices/auth/token-login-slice';
 import useHandleStateUpdate from '../GeneralHooks/handle-state-update-hook';
 import { CONSTANTS } from '../../services/config/app-config';
+import { off } from 'process';
+import SortBy from '../../components/ProductListingComponents/HorizontalFilterList.tsx/SortBy';
 
 const useProductDetail = () => {
   const { query } = useRouter();
@@ -19,16 +21,16 @@ const useProductDetail = () => {
   const [variantOf, setVariantOf] = useState<string>('');
   const [productVariantData, setProductVariantData] = useState([]);
   const [variantLoading, setVariantLoading] = useState<boolean>(false);
-
+  const requestParams = {
+    item: query?.productId,
+    slug: query?.productId,
+    filter: query?.filter,
+    page: query?.page,
+    offset: query?.offset,
+    sort_by: query?.sort_by,
+    currency: 'INR',
+  };
   const fetchProductDetailDataAPI = async () => {
-    const requestParams = {
-      item: query?.productId,
-      slug: query?.productId,
-      filter: query?.filter,
-      page: query?.page,
-      offset: query?.offset,
-      currency: 'INR',
-    };
     setIsLoading(true);
     try {
       const productDetailAPI: any = await fetchProductDetailData(SUMMIT_APP_CONFIG, requestParams, TokenFromStore?.token);
