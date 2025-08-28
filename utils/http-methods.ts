@@ -2,6 +2,7 @@ import axios from 'axios';
 import fetchAPISDK from '../utils/get-api-sdk';
 import { CONSTANTS } from '../services/config/app-config';
 import APP_CONFIG from '../interfaces/app-config-interface';
+import splitToken from './split-token';
 
 /**
  * @function getVME - VME stands for Version, Method and Entity for that API function.
@@ -87,7 +88,7 @@ export const callGetAPI = async (url: string, token?: any) => {
   const API_CONFIG = {
     headers: {
       Accept: 'application/json',
-      ...(token ? { Authorization: token } : {}),
+      ...(token ? { ...splitToken(token) } : {}),
     },
   };
   await axios
@@ -99,7 +100,10 @@ export const callGetAPI = async (url: string, token?: any) => {
       response = res;
     })
     .catch((err: any) => {
-      if (err.code === 'ECONNABORTED') {
+      if (err.response && err.response.status === 401) {
+        localStorage.clear();
+        window.location.href = '/login';
+      } else if (err.code === 'ECONNABORTED') {
         response = 'Request timed out. API took too long to return response.';
       } else if (err.code === 'ERR_BAD_REQUEST') {
         response = err?.response?.data?.exception ?? 'Bad Request';
@@ -116,7 +120,7 @@ export const callPostAPI = async (url: string, body: any, token?: any) => {
   let response: any;
   const API_CONFIG = {
     headers: {
-      ...(token ? { Authorization: token } : {}),
+      ...(token ? {...splitToken(token) } : {}),
     },
   };
   await axios
@@ -128,7 +132,10 @@ export const callPostAPI = async (url: string, body: any, token?: any) => {
       response = res;
     })
     .catch((err: any) => {
-      if (err.code === 'ECONNABORTED') {
+      if (err.response && err.response.status === 401) {
+        localStorage.clear();
+        window.location.href = '/login';
+      } else if (err.code === 'ECONNABORTED') {
         response = 'Request timed out. API took too long to return response.';
       } else if (err.code === 'ERR_BAD_REQUEST') {
         response = 'Bad Request';
