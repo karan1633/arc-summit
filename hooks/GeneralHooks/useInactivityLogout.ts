@@ -22,7 +22,7 @@ const useInactivityLogout = () => {
                 router.push('/login');
             }
         } catch (error) {
-            console.log(error)
+            console.warn(error)
         }
     };
     const resetTimer = () => {
