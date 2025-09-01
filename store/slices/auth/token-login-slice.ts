@@ -28,7 +28,7 @@ export const GetAccessTokenScreen = createSlice({
   initialState,
   reducers: {
     storeToken(state: any, action: any) {
-      state.token = action?.payload?.access_token;
+      state.token = action?.payload?.access_token + " " + action?.payload?.unique_key;
       state.error = '';
       state.isLoading = 'succeeded';
     },
