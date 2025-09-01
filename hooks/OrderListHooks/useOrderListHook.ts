@@ -13,6 +13,7 @@ const useOrderListHook = () => {
   const [orderListData, setOrderListData] = useState<any>([]);
   const [selectedOrder, setSelectedOrders] = useState<string[]>([]);
   const tokenFromStore: any = useSelector(get_access_token);
+  const purity = query.purity;
 
   const fetchOrderListingDataFun: any = async () => {
     let getOrderListingData: any;
@@ -31,12 +32,6 @@ const useOrderListHook = () => {
       }
     };
     const status: any = updateStatus(query?.orderStatus);
-
-
-
-
-
-
 
     /**
      * Fetches order listing data from the API using the given token and status.
@@ -91,7 +86,7 @@ const useOrderListHook = () => {
     fetchOrderListingDataFun();
   }, [query]);
 
-  return { orderListData, isLoading, errorMessage, handleSelectOrder, deleteBulkOrder };
+  return { orderListData, isLoading, errorMessage, handleSelectOrder, deleteBulkOrder, purity };
 };
 
 export default useOrderListHook;
