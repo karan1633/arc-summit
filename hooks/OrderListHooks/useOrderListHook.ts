@@ -13,6 +13,7 @@ const useOrderListHook = () => {
   const [orderListData, setOrderListData] = useState<any>([]);
   const [selectedOrder, setSelectedOrders] = useState<string[]>([]);
   const tokenFromStore: any = useSelector(get_access_token);
+  const purity = query.purity;
 
   const fetchOrderListingDataFun: any = async () => {
     let getOrderListingData: any;
@@ -22,6 +23,10 @@ const useOrderListHook = () => {
         return 'Completed';
       } else if (query === 'cancelled-orders') {
         return 'Cancelled';
+      } else if (query === 'accepted-order') {
+        return 'Accepted';
+      } else if (query === 'planned-order') {
+        return 'Planned';
       } else {
         return '';
       }
@@ -81,7 +86,7 @@ const useOrderListHook = () => {
     fetchOrderListingDataFun();
   }, [query]);
 
-  return { orderListData, isLoading, errorMessage, handleSelectOrder, deleteBulkOrder };
+  return { orderListData, isLoading, errorMessage, handleSelectOrder, deleteBulkOrder, purity };
 };
 
 export default useOrderListHook;

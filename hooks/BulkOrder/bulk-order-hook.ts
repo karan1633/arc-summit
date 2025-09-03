@@ -18,7 +18,7 @@ const useBulkOrder = () => {
 
   let users: any = localStorage.getItem('user');
   let validUser: any = localStorage.getItem('user');
-  validUser = validUser.replace(/^"(.*)"$/, '$1');
+  validUser = validUser?.replace(/^"(.*)"$/, '$1');
 
   let login: any = localStorage.getItem('token');
   const TokenFromStore: any = useSelector(get_access_token);

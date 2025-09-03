@@ -7,7 +7,7 @@ import OtpLoginApi from './otp-login-api';
 import getGoogleLoginApi from './google_login_api';
 import APP_CONFIG from '../../../interfaces/app-config-interface';
 
-const getTokenFromLoginAPI: any = async (appConfig: APP_CONFIG, loginParams: TypeLoginAPIParams) => {
+const getTokenFromLoginAPI: any = async (appConfig: APP_CONFIG,SUMMIT_APP_CONFIG:APP_CONFIG,loginParams: TypeLoginAPIParams) => {
   if (loginParams?.isGuest) {
     const guestLoginFunction = await CheckGuestLogin(appConfig, loginParams);
     return guestLoginFunction;
@@ -18,12 +18,12 @@ const getTokenFromLoginAPI: any = async (appConfig: APP_CONFIG, loginParams: Typ
     const getTokenAfterLogginViaGoogle = await getGoogleLoginApi(appConfig, loginParams);
     return getTokenAfterLogginViaGoogle;
   } else {
-    const getTokenAfterLogginViaUsrAndPwd = await getAccessTokenFromAPI(appConfig, loginParams);
+    const getTokenAfterLogginViaUsrAndPwd = await getAccessTokenFromAPI(appConfig,SUMMIT_APP_CONFIG ,loginParams);
     return getTokenAfterLogginViaUsrAndPwd;
   }
 };
 
-const getAccessTokenFromAPI = async (appConfig: APP_CONFIG, loginParams: TypeLoginAPIParams) => {
+const getAccessTokenFromAPI = async (appConfig: APP_CONFIG , SUMMIT_APP_CONFIG: APP_CONFIG, loginParams: any) => {
   const usr = loginParams?.values.usr;
   const pwd = encodeURIComponent(loginParams?.values?.pwd);
   const version = appConfig.version;
@@ -42,7 +42,7 @@ const getAccessTokenFromAPI = async (appConfig: APP_CONFIG, loginParams: TypeLog
   const params = `?version=${version}&method=${method}&entity=${entity}&usr=${usr}&pwd=${pwd}`;
   await axios.post(`${CONSTANTS.API_BASE_URL}${apiSDKName}${params}`, undefined, config).then((res) => {
     response = res?.data?.message;
-    UserRoleGet(appConfig, res?.data?.message?.data?.access_token);
+    UserRoleGet(SUMMIT_APP_CONFIG, res?.data?.message );
   });
   return response;
 };

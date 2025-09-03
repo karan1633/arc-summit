@@ -99,23 +99,26 @@ const useAddToCartHook = () => {
     }
   };
 
-  const updateCartData = async (custName: any, updatedPurity: any, setPurity: any) => {
+  const updateCartData = async (custName: any, updatedPurity: any,selectedColor:any ,setPurity: any, setUpdatedColor:any) => {
     const localPurity = localStorage.getItem('localPurity');
     const reqBody = {
       purity: updatedPurity || localPurity,
       customer_name: custName,
       quotation_id: quotation_Id,
+      colour:selectedColor
     };
     const updateCustName = await updateCartDataAPI(ARC_APP_CONFIG, reqBody, tokenFromStore?.token);
-    if (updateCustName?.status === 200) {
+    if (updateCustName?.status === 200 && updateCustName.data.message.msg === "success") {
       toast.success(' updated successfully!');
       setPurity(updatedPurity);
+      setUpdatedColor(selectedColor);
+      localStorage.setItem("colour", selectedColor)
       localStorage.setItem('localPurity', updatedPurity);
+      return updateCustName.data.message.msg
     } else {
       toast.error('Failed to Upadte');
     }
   };
-
   return { addToCartItem, placeOrderAPIFunc, RemoveItemCartAPIFunc, cLearCartAPIFunc, disableRemove, updateCartData };
 };
 export default useAddToCartHook;
