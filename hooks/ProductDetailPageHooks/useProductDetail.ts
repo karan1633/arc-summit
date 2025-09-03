@@ -6,6 +6,7 @@ import fetchProductVariant from '../../services/api/product-detail-page-apis/get
 import { get_access_token } from '../../store/slices/auth/token-login-slice';
 import useHandleStateUpdate from '../GeneralHooks/handle-state-update-hook';
 import { CONSTANTS } from '../../services/config/app-config';
+import { selectPrevPage } from '../../store/slices/reference-tracking-slices/prev-page-slice';
 
 const useProductDetail = () => {
   const { query } = useRouter();
@@ -13,6 +14,7 @@ const useProductDetail = () => {
   const { SUMMIT_APP_CONFIG }: any = CONSTANTS;
   // const currency_state_from_redux: any = useSelector(currency_selector_state);
   const TokenFromStore: any = useSelector(get_access_token);
+  const prevPage: any = useSelector(selectPrevPage);
 
   const [productDetailData, setProductDetailData] = useState({});
   // Set if product detail data is variant that has opened. If Variant then check what's its template and set it.
@@ -26,6 +28,15 @@ const useProductDetail = () => {
       slug: query?.productId,
       currency: 'INR',
     };
+    const params = new URLSearchParams(window.location.search);
+    const prevPageType = params.get('ref');
+    const prevPageID = params.get('refID');
+    if (prevPageType && prevPageID) {
+      sessionStorage.setItem(
+        'summit_page_data',
+        JSON.stringify({ reference_type: prevPageType, reference_id: prevPageID, page_type: 'Product', page_id: requestParams.slug })
+      );
+    }
     setIsLoading(true);
     try {
       const productDetailAPI: any = await fetchProductDetailData(SUMMIT_APP_CONFIG, requestParams, TokenFromStore?.token);

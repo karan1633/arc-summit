@@ -35,7 +35,7 @@ const useLoginHook = () => {
       localStorage.setItem('user', values.usr);
       localStorage.setItem('party_name', tokenData?.full_name);
       localStorage.setItem('party_id', tokenData?.party_id);
-      localStorage.setItem('lastViewedPage', JSON.stringify(pageHistory));
+
       router.push('/');
       toast.success('Login Successfully');
     } else {

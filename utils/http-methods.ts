@@ -80,8 +80,8 @@ export const executeGETAPI = async (
       ...getSocketAdditionalData,
     };
     if (Object.keys(socketEventAdditionalData)?.length > 0) {
-      const socketData = localStorage.getItem('socket_data');
-      handleSocketEvents(socketData);
+      // const socketData = localStorage.getItem('socket_data');
+      // handleSocketEvents(socketData);
       setTimeout(() => emitSocketEvent(socketEventAdditionalData), 0); // Ensures it runs asynchronously
     }
   }

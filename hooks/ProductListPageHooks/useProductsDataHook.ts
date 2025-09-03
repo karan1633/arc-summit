@@ -65,6 +65,16 @@ const useProductListing = () => {
     let productListDataAPI: any;
     setIsLoading(true);
     try {
+      sessionStorage.setItem(
+        'summit_page_data',
+        JSON.stringify({
+          reference_type: 'category',
+          reference_id: reqParams.url_params.category,
+          page_type: 'category',
+          page_id: reqParams.url_params.category,
+        })
+      );
+
       productListDataAPI = await fetchProductListingFromAPI(SUMMIT_APP_CONFIG, reqParams, TokenFromStore?.token);
       if (productListDataAPI?.data?.message?.msg === 'success' && productListDataAPI?.data?.message?.data?.length > 0) {
         if (CONSTANTS.SHOW_MORE_ITEMS === 'load-more') {
@@ -86,9 +96,6 @@ const useProductListing = () => {
     }
   };
 
-
-
-
   useEffect(() => {
     const catalogSlug = router.route.split('/')[1];
     if (catalogSlug === 'catalog') {
@@ -99,6 +106,9 @@ const useProductListing = () => {
   }, []);
 
   useEffect(() => {
+    if (!router.route.includes('product-category')) {
+      return;
+    }
     let storeUsefulParamsForFurtherProductListingApi;
     if (router.asPath === '/product-category') {
       router.push({
