@@ -6,7 +6,7 @@ import GetAccessTokenReducer from './slices/auth/token-login-slice';
 import MultiLanguageReducer from './slices/general_slices/multilang-slice';
 import SelectedFilterLangDataScreen from './slices/general_slices/selected-multilanguage-slice';
 import wishlistSlice from './slices/wishlist-slices/wishlist-local-slice';
-import ReferenceTrackingSlice from './slices/reference-tracking-slices/reference-tracking-slice';
+import PrevPageReferenceTracker from './slices/reference-tracking-slices/prev-page-slice';
 import cartLocalSlice from './slices/cart-slices/cart-local-slice';
 import { resetStore } from './slices/auth/logout-slice';
 
@@ -19,7 +19,7 @@ const appReducer = combineReducers({
   SelectedFilterLangDataScreen: SelectedFilterLangDataScreen,
   wishlistSlice: wishlistSlice,
   cart: cartLocalSlice,
-  ReferenceTrackingSlice: ReferenceTrackingSlice,
+  PrevPageReferenceTracker: PrevPageReferenceTracker,
 });
 
 const rootReducer = (state: any, action: any) => {

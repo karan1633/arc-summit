@@ -3,10 +3,12 @@ import { executeGETAPI } from '../../../utils/http-methods';
 import { SocketInfoTypes } from '../../../interfaces/socket-types';
 
 const fetchProductListingFromAPI = async (appName: any, query: any, token: any) => {
+  const retrieveSessionStorage = sessionStorage.getItem('summit_page_data');
+  const { reference_type, reference_id } = JSON.parse(retrieveSessionStorage) || {};
   let response: any;
   let page_no: number | undefined;
   let limit: number | undefined;
-  let socketInfo: SocketInfoTypes = { page_type: '', page_id: '', action: '' };
+  let socketInfo: SocketInfoTypes = { page_type: '', page_id: '', action: '', reference_type, reference_id };
 
   // Determine the page number and limit based on the pagination method
   if (CONSTANTS.SHOW_MORE_ITEMS === 'load-more') {
