@@ -10,7 +10,6 @@ const useMultilangHook = () => {
 
   const SelectedLangDataFromStore = useSelector(SelectedFilterLangDataFromStore);
 
-  // console.log("MultiLanguageFromStore hoooook", MultiLanguageFromStore);
   const [multiLanguagesData, SetMultiLanguagesData] = useState<any>([]);
   const [selectedLang, setSelectedLang] = useState<any>('en');
   const TokenFromStore: any = useSelector(get_access_token);
@@ -31,14 +30,12 @@ const useMultilangHook = () => {
   // }, []);
 
   useEffect(() => {
-    // console.log("check data of server obj - hook", MultiLanguageFromStore);
     if (Object.keys(MultiLanguageFromStore)?.length > 0) {
       SetMultiLanguagesData(MultiLanguageFromStore?.languageData);
     }
   }, [MultiLanguageFromStore]);
 
   const handleLanguageChange = (lang: any) => {
-    console.log('selected lang', lang);
     if (lang === 'ar') {
       document.documentElement.dir = 'rtl';
     } else {
@@ -54,15 +51,8 @@ const useMultilangHook = () => {
       multilanguageData: MultiLanguageFromStore?.languageData,
       selectedLanguage: selectedLang,
     };
-    // console.log("params", params);
     dispatch(SelectedLangData(params) as any);
   }, [MultiLanguageFromStore, selectedLang]);
-
-  // console.log(
-  //   "MultiLanguageFromStore hoooook",
-  //   multiLanguagesData,
-  //   selectedLang
-  // );
 
   return {
     setSelectedLang,

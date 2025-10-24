@@ -8,9 +8,14 @@ const postPlaceOrderAPI: any = async (appConfig: APP_CONFIG, params: any, token?
   const method = 'place_order';
   const entity = 'sales_order';
   const apiSDKName = appConfig.app_name;
-  const url = `${CONSTANTS.API_BASE_URL}${apiSDKName}?version=${version}&method=${method}&entity=${entity}&order_id=${params?.order_id}&party_name=${params?.party_name}`;
+  const url = `${
+    CONSTANTS.API_BASE_URL
+  }${apiSDKName}?version=${version}&method=${method}&entity=${entity}&order_id=${params?.order_id}&party_name=${params?.party_name}&final_remark=${
+    params?.final_remark || ''
+  }`;
 
   response = await callPostAPI(url, undefined, token);
+
   return response;
 };
 export default postPlaceOrderAPI;
