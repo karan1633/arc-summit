@@ -4,7 +4,6 @@ import { getMessaging, getToken, deleteToken } from 'firebase/messaging';
 import { requestPermission } from 'firebase/messaging';
 
 export const initializeFirebase = () => {
-  console.log('firebase app init', initializeApp);
   const firebaseConfig = {
     messagingSenderId: '418835235707',
     projectId: 'test-web-push-a2336',
@@ -18,7 +17,6 @@ export const initializeFirebase = () => {
 };
 
 export const askForPermissionToReceiveNotifications = async () => {
-  console.log('Ask for permission');
   try {
     const messaging = getMessaging();
     const currentToken = await getToken(messaging);
@@ -26,30 +24,22 @@ export const askForPermissionToReceiveNotifications = async () => {
     // if (currentToken) {
     //   // Token exists, delete the token
     //   await deleteToken(messaging, currentToken);
-    //   console.log("Deleted existing token:", currentToken);
     // }
 
     // const newToken = await getToken(messaging);
-    console.log('New token:', currentToken);
 
     return newToken;
   } catch (error) {
-    console.log('Error:', error);
   }
 };
 
 // export const askForPermissionToReceiveNotifications = async () => {
-//   console.log("Ask for permission");
-//   console.log("request permission", requestPermission);
 //   try {
 //     const messaging = getMessaging();
 //     // await requestPermission();
 //     const token = await getToken(messaging);
-//     console.log("User token:", token);
 //     return token;
 //   } catch (error) {
-//     console.log("err in catch");
-//     console.error(error);
 //   }
 // };
 
@@ -61,25 +51,19 @@ export const askForPermissionToReceiveNotifications = async () => {
 //       // Token exists, proceed with unsubscribe
 //       deleteToken(messaging, currentToken)
 //         .then(() => {
-//           console.log("Token unsubscribed successfully");
 
 //           // Subscribe to a new token
 //           getToken(messaging)
 //             .then((newToken) => {
-//               console.log("Subscribed to new token:", newToken);
 //               // Use the new token for sending notifications or other operations
 //             })
 //             .catch((error) => {
-//               console.log("Error retrieving new token:", error);
 //             });
 //         })
 //         .catch((error) => {
-//           console.log("Error unsubscribing token:", error);
 //         });
 //     } else {
-//       console.log("Token does not exist, no need to unsubscribe");
 //     }
 //   }).catch((error) => {
-//     console.log("Error retrieving token:", error);
 //   });
 // }

@@ -102,9 +102,11 @@ const useOrderDetailHook = () => {
           qty_size_list: qtySizeList,
           colour: colour,
           remark: product?.remark,
+          note: product?.note,
           user: user || null,
           wastage: '',
           party_name: partyName,
+          final_remark: orderData.final_remark || '',
         };
 
         paramsArray.push(params);
