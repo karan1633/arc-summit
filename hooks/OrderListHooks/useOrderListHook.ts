@@ -9,10 +9,18 @@ import { CONSTANTS } from '../../services/config/app-config';
 const useOrderListHook = () => {
   const { isLoading, setIsLoading, errorMessage, setErrMessage }: any = useHandleStateUpdate();
   const { SUMMIT_APP_CONFIG, ARC_APP_CONFIG }: any = CONSTANTS;
-  const { query }: any = useRouter();
+  const router: any = useRouter();
+  const { query }: any = router;
   const [orderListData, setOrderListData] = useState<any>([]);
+  const [orderListTotalCount, setOrderListTotalCount] = useState<any>([]);
   const [selectedOrder, setSelectedOrders] = useState<string[]>([]);
   const tokenFromStore: any = useSelector(get_access_token);
+
+  const handlePaginationBtn = (pageNo: any) => {
+    router.push({
+      query: { ...query, page: pageNo + 1 },
+    });
+  };
 
   const fetchOrderListingDataFun: any = async () => {
     let getOrderListingData: any;
@@ -28,6 +36,11 @@ const useOrderListHook = () => {
     };
     const status: any = updateStatus(query?.orderStatus);
 
+    const params: any = {
+      page: query?.page || 1,
+      limit: 12,
+    };
+
     /**
      * Fetches order listing data from the API using the given token and status.
      *
@@ -40,9 +53,10 @@ const useOrderListHook = () => {
      * @throws {Error} Throws an error if the API call fails.
      */
     try {
-      getOrderListingData = await getOrderListAPI(ARC_APP_CONFIG, status, tokenFromStore.token);
+      getOrderListingData = await getOrderListAPI(ARC_APP_CONFIG, params, status, tokenFromStore.token);
       if (getOrderListingData?.data?.message?.msg === 'success') {
         setOrderListData(getOrderListingData?.data?.message?.data);
+        setOrderListTotalCount(getOrderListingData?.data?.message?.total_count);
       } else {
         setErrMessage(getOrderListingData?.data?.message?.error);
       }
@@ -81,7 +95,7 @@ const useOrderListHook = () => {
     fetchOrderListingDataFun();
   }, [query]);
 
-  return { orderListData, isLoading, errorMessage, handleSelectOrder, deleteBulkOrder };
+  return { orderListData, isLoading, errorMessage, handleSelectOrder, deleteBulkOrder, handlePaginationBtn, orderListTotalCount };
 };
 
 export default useOrderListHook;
