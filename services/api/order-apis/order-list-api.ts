@@ -8,13 +8,14 @@ import { executeGETAPI, executePOSTAPI } from '../../../utils/http-methods';
  * @function getOrderListAPI
  * @param {string} appName - The name of the application.
  * @param {string} token - The authentication token.
- * @param {string} [status] - Optional status filter for the order listing.
+ * @param {object} params - Optional params object contains page filter for the order listing.
+ * @param {string} status - Optional status filter for the order listing.
  * @returns {Promise<any>} - The response from the API call.
  * @throws {Error} Throws an error if the API call fails.
  */
-export const getOrderListAPI = async (appConfig: APP_CONFIG, status: string, token: any): Promise<any> => {
+export const getOrderListAPI = async (appConfig: APP_CONFIG, params: any, status: string, token: any): Promise<any> => {
   const user = localStorage.getItem('user') || '';
-  let additionalParams = { user, ...(status && { status }) };
+  let additionalParams = { user, ...(params && { ...params }), ...(status && { status }) };
   // Use executeGETAPI to handle GET Request logic
   const response = await executeGETAPI(
     appConfig,
