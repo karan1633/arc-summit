@@ -12,6 +12,7 @@ const useOrderReport = () => {
   const [OrderReportData, setOrderReportData] = useState<any>([]);
   const tokenFromStore: any = useSelector(get_access_token);
   const router: any = useRouter();
+  const purity = router.query.purity
   let status: any;
   const user = localStorage.getItem('user');
   const fetchOrderReportDataFunction = async () => {
@@ -61,6 +62,7 @@ const useOrderReport = () => {
     isLoading,
     errorMessage,
     router,
+    purity,
   };
 };
 
