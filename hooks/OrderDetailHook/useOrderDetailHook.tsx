@@ -9,7 +9,13 @@ import { CONSTANTS } from '../../services/config/app-config';
 import { deletOrderApi } from '../../services/api/order-apis/order-list-api';
 import { selectCart } from '../../store/slices/cart-slices/cart-local-slice';
 import { PostAddToCartAPI } from '../../services/api/cart-apis/add-to-cart-api';
-import { deleteOrderApi, getUserPermissionsAPI, readyToDispatchApi } from '../../services/api/order-detail-apis/order-update-api';
+import {
+  deleteOrderApi,
+  getUserPermissionsAPI,
+  getUserPermissionsForButtonsAPI,
+  readyToDispatchApi,
+  updateOrderItemStatusApi,
+} from '../../services/api/order-detail-apis/order-update-api';
 
 const useOrderDetailHook = () => {
   const { query } = useRouter();
@@ -24,6 +30,15 @@ const useOrderDetailHook = () => {
   const [editableCustomerName, setEditableCustomerName] = useState(orderReOrderCustomerName || getCustomerName);
   const { cartCount } = useSelector(selectCart);
   const [showButtons, setShowButtons] = useState(false);
+  const [buttonInfo, setButtonInfo] = useState<any>({});
+
+  // Modal state
+  const [modalType, setModalType] = useState<any>(null);
+  const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [modalData, setModalData] = useState<any>({
+    qty: '',
+    weight: '',
+  });
 
   const fetchOrderData: any = async () => {
     setIsLoading(true);
@@ -59,7 +74,7 @@ const useOrderDetailHook = () => {
   let user = localStorage.getItem('user');
   const partyName = localStorage.getItem('party_name');
 
- const handleReorder = async (customerName: any) => {
+  const handleReorder = async (customerName: any) => {
     if (cartCount > 0) {
       return toast.warn('Reorder unsuccessful as your Cart is not empty');
     }
@@ -89,7 +104,6 @@ const useOrderDetailHook = () => {
     // }
     reOrderOrderDetail.forEach((productArray: any[]) => {
       productArray.forEach((product: any) => {
-
         const itemCode = product.item_code;
         const reorderPurity = product.purity;
 
@@ -144,6 +158,18 @@ const useOrderDetailHook = () => {
     }
   };
 
+  const handleShowItemLevelButtons = async () => {
+    let userPermission: any = await getUserPermissionsForButtonsAPI(ARC_APP_CONFIG, user, tokenFromStore.token);
+    if (userPermission?.data?.message?.data) {
+      const formatted = Object.entries(userPermission?.data?.message?.data).map(([label, value]) => ({
+        label,
+        value,
+      }));
+
+      setButtonInfo(formatted);
+    }
+  };
+
   const handleDeleteOrder = async (itemCode: any) => {
     const reqBody = {
       item_code: itemCode,
@@ -166,12 +192,79 @@ const useOrderDetailHook = () => {
     }
   };
 
+  const handleModalSubmitApiRequest = async (payload: any) => {
+    let updateOrderItemStatus = await updateOrderItemStatusApi(ARC_APP_CONFIG, payload, tokenFromStore.token);
+
+    if (updateOrderItemStatus?.status === 200) {
+      toast.success(updateOrderItemStatus?.data?.message?.data);
+      if (updateOrderItemStatus?.data?.message?.data) {
+        fetchOrderData();
+      }
+    } else {
+      toast.warn(updateOrderItemStatus?.data?.message?.error);
+    }
+  };
+
+  const openModal = (type: any, item: any) => {
+    setModalType(type);
+    setSelectedItem(item);
+    setModalData({
+      qty: type === 'Dispatch' ? item.ready_quantity || '' : item.qty || '',
+      weight: type === 'Dispatch' ? item.dispatch_weight || '' : item.weight || '',
+    });
+  };
+
+  const closeModal = () => {
+    setModalType(null);
+    setSelectedItem(null);
+    setModalData({ qty: '', weight: '' });
+  };
+
+  const handleModalInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setModalData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleModalSubmit = async () => {
+    if (!selectedItem) return;
+
+    const payload = {
+      ...modalData,
+      status:
+        modalType === 'Reject' ? 'Rejected' : modalType === 'Complete' ? 'Completed' : modalType === 'Dispatch' ? 'Dispatched' : modalType, // e.g. Dispatch, Reject, Repair
+      soisd_name: selectedItem.soisd_name, // dynamic fallback
+      sales_order: query?.orderId,
+      item_code: selectedItem.item_code,
+    };
+
+    handleModalSubmitApiRequest(payload);
+
+    closeModal();
+  };
+
   useEffect(() => {
     fetchOrderData();
     handleShowButtons();
+    handleShowItemLevelButtons();
   }, [query]);
 
-  return { orderData, isLoading, errorMessage, handleCancelOrder, handleReorder, showButtons, handleDeleteOrder, handleReadyToDispatch };
+  return {
+    orderData,
+    isLoading,
+    errorMessage,
+    handleCancelOrder,
+    handleReorder,
+    showButtons,
+    handleDeleteOrder,
+    handleReadyToDispatch,
+    modalData,
+    modalType,
+    openModal,
+    closeModal,
+    handleModalInputChange,
+    handleModalSubmit,
+    buttonInfo,
+  };
 };
 
 export default useOrderDetailHook;
