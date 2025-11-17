@@ -230,8 +230,7 @@ const useOrderDetailHook = () => {
 
     const payload = {
       ...modalData,
-      status:
-        modalType === 'Reject' ? 'Rejected' : modalType === 'Complete' ? 'Completed' : modalType === 'Dispatch' ? 'Dispatched' : modalType, // e.g. Dispatch, Reject, Repair
+      status: modalType, // e.g. Dispatch, Reject, Repair
       soisd_name: selectedItem.soisd_name, // dynamic fallback
       sales_order: query?.orderId,
       item_code: selectedItem.item_code,
