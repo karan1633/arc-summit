@@ -195,7 +195,7 @@ const useOrderDetailHook = () => {
   const handleModalSubmitApiRequest = async (payload: any) => {
     let updateOrderItemStatus = await updateOrderItemStatusApi(ARC_APP_CONFIG, payload, tokenFromStore.token);
 
-    if (updateOrderItemStatus?.status === 200) {
+    if (updateOrderItemStatus?.data?.message?.error === undefined) {
       toast.success(updateOrderItemStatus?.data?.message?.data);
       if (updateOrderItemStatus?.data?.message?.data) {
         fetchOrderData();
