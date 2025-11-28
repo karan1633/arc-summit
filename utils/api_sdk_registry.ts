@@ -1,4 +1,3 @@
-
 const apiSdkRegistry: any = {
   'registration-api': { version: '', method: 'customer_signup', entity: 'registration' },
   'guest-login-api': { version: '', method: 'existing_user_signin', entity: 'signin' },
@@ -37,6 +36,12 @@ const apiSdkRegistry: any = {
   'get-customer-name-api': { version: '', method: 'get_customer_name', entity: 'sales_order' },
   'search-api': { version: 'v2', method: 'product_search', entity: 'product' },
   'get-dashboard-api': { version: '', method: 'sales_order_report_list', entity: 'sales_order' },
+  get_user_permissions_for_buttons: { version: 'v1', method: 'get_user_permissions_for_buttons', entity: 'user_permission' },
+  update_sales_order_item_manufacturing_status_details: {
+    version: 'v1',
+    method: 'update_sales_order_item_manufacturing_status_details',
+    entity: 'sales_order_item_status_details',
+  },
 };
 
 export default apiSdkRegistry;
