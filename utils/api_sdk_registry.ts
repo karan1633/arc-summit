@@ -38,6 +38,7 @@ const apiSdkRegistry: any = {
   'get-dashboard-api': { version: '', method: 'sales_order_report_list', entity: 'sales_order' },
   'get_user_permissions_for_buttons': { version: 'v1', method: 'get_user_permissions_for_buttons', entity: 'user_permission' },
   'update_sales_order_item_manufacturing_status_details': { version: 'v1', method: 'update_sales_order_item_manufacturing_status_details', entity: 'sales_order_item_status_details' },
+  'save-ss-review': { version: '', method: 'save_ss_review', entity: 'rnd_review' },
 };
 
 export default apiSdkRegistry;
