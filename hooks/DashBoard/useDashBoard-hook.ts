@@ -59,7 +59,8 @@ const useDashBoard = () => {
   ];
 
   const handleCardClick = (link: string) => {
-    router.push(`${link}?purity=${selectedPurity}`);
+    const url = `${CONSTANTS.REPORTS_BASE_URL}${link}?purity=${selectedPurity}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   const colorMap: any = {
