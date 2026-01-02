@@ -5,6 +5,7 @@ import { deletOrderApi, getOrderListAPI } from '../../services/api/order-apis/or
 import { get_access_token } from '../../store/slices/auth/token-login-slice';
 import useHandleStateUpdate from '../GeneralHooks/handle-state-update-hook';
 import { CONSTANTS } from '../../services/config/app-config';
+import getOrderReportFilterOptionsAPI from '../../services/api/order-report-apis/order-report-filter-options-api';
 
 const useOrderListHook = () => {
   const { isLoading, setIsLoading, errorMessage, setErrMessage }: any = useHandleStateUpdate();
@@ -15,6 +16,19 @@ const useOrderListHook = () => {
   const [orderListTotalCount, setOrderListTotalCount] = useState<any>([]);
   const [selectedOrder, setSelectedOrders] = useState<string[]>([]);
   const tokenFromStore: any = useSelector(get_access_token);
+  const [filters, setFilters] = useState({
+    transaction_date: '',
+    delivery_date: '',
+    customer_name: '',
+    order_id: '',
+    purity: '',
+  });
+  const [filterOptions, setFilterOptions] = useState({
+    customers: [],
+    purities: [],
+    order_ids: [],
+  });
+
 
   const handlePaginationBtn = (pageNo: any) => {
     router.push({
@@ -36,10 +50,16 @@ const useOrderListHook = () => {
     };
     const status: any = updateStatus(query?.orderStatus);
 
-    const params: any = {
+    const params = {
       page: query?.page || 1,
       limit: 12,
+      transaction_date: filters.transaction_date,
+      delivery_date: filters.delivery_date,
+      customer_name: filters.customer_name?.value || '',
+      purity: filters.purity?.value || '',
+      order_id: filters.order_id?.value || '',
     };
+
 
     /**
      * Fetches order listing data from the API using the given token and status.
@@ -93,9 +113,55 @@ const useOrderListHook = () => {
 
   useEffect(() => {
     fetchOrderListingDataFun();
-  }, [query]);
+  }, [query, filters]);
 
-  return { orderListData, isLoading, errorMessage, handleSelectOrder, deleteBulkOrder, handlePaginationBtn, orderListTotalCount };
+  useEffect(() => {
+    if (!tokenFromStore?.token) return;
+
+    const fetchFilterOptions = async () => {
+      try {
+        const res = await getOrderReportFilterOptionsAPI(
+          ARC_APP_CONFIG,
+          status,
+          tokenFromStore.token
+        );
+        
+        setFilterOptions({
+          customers: (res?.data?.message?.customers || []).map((c: string) => ({
+            label: c,
+            value: c,
+          })),
+          purities: (res?.data?.message?.purities || []).map((p: string) => ({
+            label: p,
+            value: p,
+          })),
+          order_ids: (res?.data?.message?.order_ids || []).map((o: string) => ({
+            label: o,
+            value: o,
+          })),
+        });
+      } catch {
+        setFilterOptions({ customers: [], purities: [], order_ids: [] });
+      }
+    };
+
+    fetchFilterOptions();
+  }, [tokenFromStore?.token]);
+
+  return {
+    orderListData,
+    isLoading,
+    errorMessage,
+    filters,
+    setFilters,
+    filterOptions,
+    handleSelectOrder,
+    deleteBulkOrder,
+    handlePaginationBtn,
+    orderListTotalCount,
+  };
+
+
 };
 
 export default useOrderListHook;
