@@ -7,6 +7,19 @@ import useHandleStateUpdate from '../GeneralHooks/handle-state-update-hook';
 import { CONSTANTS } from '../../services/config/app-config';
 import getOrderReportFilterOptionsAPI from '../../services/api/order-report-apis/order-report-filter-options-api';
 
+type SelectOption = {
+  label: string;
+  value: string;
+};
+
+type Filters = {
+  transaction_date: string;
+  delivery_date: string;
+  customer_name: SelectOption | null;
+  order_id: SelectOption | null;
+  purity: SelectOption | null;
+};
+
 const useOrderListHook = () => {
   const { isLoading, setIsLoading, errorMessage, setErrMessage }: any = useHandleStateUpdate();
   const { SUMMIT_APP_CONFIG, ARC_APP_CONFIG }: any = CONSTANTS;
@@ -16,14 +29,18 @@ const useOrderListHook = () => {
   const [orderListTotalCount, setOrderListTotalCount] = useState<any>([]);
   const [selectedOrder, setSelectedOrders] = useState<string[]>([]);
   const tokenFromStore: any = useSelector(get_access_token);
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<Filters>({
     transaction_date: '',
     delivery_date: '',
-    customer_name: '',
-    order_id: '',
-    purity: '',
+    customer_name: null,
+    order_id: null,
+    purity: null,
   });
-  const [filterOptions, setFilterOptions] = useState({
+  const [filterOptions, setFilterOptions] = useState<{
+    customers: SelectOption[];
+    purities: SelectOption[];
+    order_ids: SelectOption[];
+  }>({
     customers: [],
     purities: [],
     order_ids: [],
@@ -125,7 +142,7 @@ const useOrderListHook = () => {
           status,
           tokenFromStore.token
         );
-        
+
         setFilterOptions({
           customers: (res?.data?.message?.customers || []).map((c: string) => ({
             label: c,
