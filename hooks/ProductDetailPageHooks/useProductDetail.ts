@@ -26,6 +26,7 @@ const useProductDetail = () => {
     const requestParams = {
       item: query?.productId,
       slug: query?.productId,
+      filter: query?.filter,
       currency: 'INR',
     };
     const params = new URLSearchParams(window.location.search);
