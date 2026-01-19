@@ -39,6 +39,7 @@ const apiSdkRegistry: any = {
   'get_user_permissions_for_buttons': { version: 'v1', method: 'get_user_permissions_for_buttons', entity: 'user_permission' },
   'update_sales_order_item_manufacturing_status_details': { version: 'v1', method: 'update_sales_order_item_manufacturing_status_details', entity: 'sales_order_item_status_details' },
   'save-ss-review': { version: '', method: 'save_ss_review', entity: 'rnd_review' },
+  'get-factory-list-api': { version: '', method: 'get_allowed_factory_list', entity: 'sales_order' },
 };
 
 export default apiSdkRegistry;
