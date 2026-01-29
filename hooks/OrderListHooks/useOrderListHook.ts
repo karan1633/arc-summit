@@ -18,6 +18,9 @@ type Filters = {
   customer_name: SelectOption | null;
   order_id: SelectOption | null;
   purity: SelectOption | null;
+  product: SelectOption | null;
+  factory: SelectOption | null;
+  user: SelectOption | null;
 };
 
 const useOrderListHook = () => {
@@ -35,15 +38,24 @@ const useOrderListHook = () => {
     customer_name: null,
     order_id: null,
     purity: null,
+    product: null,
+    factory: null,
+    user: null
   });
   const [filterOptions, setFilterOptions] = useState<{
     customers: SelectOption[];
     purities: SelectOption[];
     order_ids: SelectOption[];
+    products: SelectOption[];
+    factories: SelectOption[];
+    users: SelectOption[];
   }>({
     customers: [],
     purities: [],
     order_ids: [],
+    products: [],
+    factories: [],
+    users: []
   });
 
 
@@ -75,6 +87,9 @@ const useOrderListHook = () => {
       customer_name: filters.customer_name?.value || '',
       purity: filters.purity?.value || '',
       order_id: filters.order_id?.value || '',
+      product: filters.product?.value || '',
+      factory: filters.factory?.value || '',
+      userFilter: filters.user?.value || '',
     };
 
 
@@ -156,9 +171,21 @@ const useOrderListHook = () => {
             label: o,
             value: o,
           })),
+          products: (res?.data?.message?.products || []).map((p: string) => ({
+            label: p,
+            value: p,
+          })),
+          factories: (res?.data?.message?.factories || []).map((f: string) => ({
+            label: f,
+            value: f,
+          })),
+          users: (res?.data?.message?.users || []).map((u: any) => ({
+            label: u.full_name,
+            value: u.name,
+          })),
         });
       } catch {
-        setFilterOptions({ customers: [], purities: [], order_ids: [] });
+        setFilterOptions({ customers: [], purities: [], order_ids: [], products: [], factories: [], users: [] });
       }
     };
 
