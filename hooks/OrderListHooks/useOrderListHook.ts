@@ -180,8 +180,8 @@ const useOrderListHook = () => {
             value: f,
           })),
           users: (res?.data?.message?.users || []).map((u: any) => ({
-            label: u.full_name,
-            value: u.name,
+            label: u,
+            value: u,
           })),
         });
       } catch {
