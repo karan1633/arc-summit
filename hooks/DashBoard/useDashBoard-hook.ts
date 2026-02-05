@@ -8,6 +8,10 @@ import { Axios, AxiosResponse } from 'axios';
 import { callGetAPI } from '../../utils/http-methods';
 import getAllowedFactoryList from '../../services/api/dashboard-api/getAllowedFactoryList';
 
+type PurityOption = {
+  name: string;
+};
+
 const useDashBoard = () => {
   const router = useRouter();
   const { ARC_APP_CONFIG } = CONSTANTS;
@@ -16,7 +20,7 @@ const useDashBoard = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [errorMessage, setErrMessage] = useState<string>('');
   const [data, setData] = useState([]);
-  const [purity, setPurity] = useState([]);
+  const [purity, setPurity] = useState<PurityOption[]>([]);
   const [factories, setFactories] = useState<any[]>([]);
   const [selectedFactory, setSelectedFactory] = useState<string>('');
 
