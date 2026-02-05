@@ -5,6 +5,8 @@ import fetchDashBardData from '../../services/api/dashboard-api/get-dashboard-ap
 import { useSelector } from 'react-redux';
 import { get_access_token } from '../../store/slices/auth/token-login-slice';
 import { Axios, AxiosResponse } from 'axios';
+import { callGetAPI } from '../../utils/http-methods';
+import getAllowedFactoryList from '../../services/api/dashboard-api/getAllowedFactoryList';
 
 const useDashBoard = () => {
   const router = useRouter();
@@ -14,16 +16,33 @@ const useDashBoard = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [errorMessage, setErrMessage] = useState<string>('');
   const [data, setData] = useState([]);
+  const [purity, setPurity] = useState([]);
+  const [factories, setFactories] = useState<any[]>([]);
+  const [selectedFactory, setSelectedFactory] = useState<string>('');
 
   const requestParams = {
     user: localStorage.getItem('user'),
     status: 'dashboard',
     purity: selectedPurity,
   };
+
   const fetchDashBoardData = async () => {
+    if (!selectedFactory) return;
+
     try {
       setIsLoading(false);
-      const res: AxiosResponse = await fetchDashBardData(ARC_APP_CONFIG, requestParams, TokenFromStore?.token);
+      const requestParams = {
+        user: localStorage.getItem('user'),
+        status: 'dashboard',
+        purity: selectedPurity,
+        factory: selectedFactory,
+      };
+
+      const res: AxiosResponse = await fetchDashBardData(
+        ARC_APP_CONFIG,
+        requestParams,
+        TokenFromStore?.token
+      );
       const { data } = res.data.message.data;
       setData(data);
     } catch (error) {
@@ -33,33 +52,40 @@ const useDashBoard = () => {
     }
   };
 
+  const fetchFactories = async () => {
+    try {
+      const res: AxiosResponse = await getAllowedFactoryList(
+        ARC_APP_CONFIG,
+        TokenFromStore?.token
+      );
+
+      const factoryList = res?.data?.message || [];
+      setFactories(factoryList);
+
+      if (factoryList.length && !selectedFactory) {
+        setSelectedFactory(factoryList[0].name);
+      }
+    } catch (error) {
+      setErrMessage('Failed to fetch factories.');
+    }
+  };
+
   useEffect(() => {
     fetchDashBoardData();
-  }, [selectedPurity]);
+  }, [selectedPurity, selectedFactory]);
 
-  const purity = [
-    {
-      name: '22KT',
-    },
-    {
-      name: '18KT',
-    },
-    {
-      name: '14KT',
-    },
-    {
-      name: '9KT',
-    },
-    {
-      name: '21KT',
-    },
-    {
-      name: '92',
-    },
-  ];
+  const getPurityValues = async () => {
+    const url = `${CONSTANTS.API_BASE_URL}/api/resource/Purity`;
+    const fetchPurityValues = await callGetAPI(url, TokenFromStore?.token);
+    const purityValues = fetchPurityValues?.data?.data;
+    setPurity(purityValues);
+    if (purityValues.length) setSelectedPurity(purityValues[0].name);
+  };
 
   const handleCardClick = (link: string) => {
-   router.push(`${link}?purity=${selectedPurity}`);
+    const url = `${CONSTANTS.REPORTS_BASE_URL}${link}` +
+      `?purity=${selectedPurity}&factory=${selectedFactory}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   const colorMap: any = {
@@ -70,6 +96,12 @@ const useDashBoard = () => {
     'Due Date Orders': '#003366',
     'Completed Orders': '#000080',
   };
+
+  useEffect(() => {
+    getPurityValues();
+    fetchFactories();
+  }, []);
+
   return {
     data,
     purity,
@@ -78,6 +110,9 @@ const useDashBoard = () => {
     colorMap,
     handleCardClick,
     isLoading,
+    factories,
+    selectedFactory,
+    setSelectedFactory,
   };
 };
 
