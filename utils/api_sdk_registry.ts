@@ -42,7 +42,8 @@ const apiSdkRegistry: any = {
     method: 'update_sales_order_item_manufacturing_status_details',
     entity: 'sales_order_item_status_details',
   },
-  'order-reports-filter-options': { version: '', method: 'get_filter_options', entity: 'sales_order' }
+  'order-reports-filter-options': { version: '', method: 'get_filter_options', entity: 'sales_order' },
+  'get-factory-list-api': { version: '', method: 'get_allowed_factory_list', entity: 'sales_order' },
 };
 
 export default apiSdkRegistry;
