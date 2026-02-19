@@ -66,6 +66,7 @@ const useOrderDetailHook = () => {
     const deleteOrder = await deletOrderApi(ARC_APP_CONFIG, reqBody, tokenFromStore.token);
     if (deleteOrder?.status === 200) {
       toast.success(deleteOrder?.data?.message?.data);
+      fetchOrderData();
     } else {
       toast.warn(deleteOrder?.data?.message?.error);
     }
