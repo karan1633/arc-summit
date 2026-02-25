@@ -44,6 +44,7 @@ const apiSdkRegistry: any = {
   },
   'order-reports-filter-options': { version: '', method: 'get_filter_options', entity: 'sales_order' },
   'get-factory-list-api': { version: '', method: 'get_allowed_factory_list', entity: 'sales_order' },
+  'save-ss-review': { version: '', method: 'save_ss_review', entity: 'rnd_review' },
 };
 
 export default apiSdkRegistry;
