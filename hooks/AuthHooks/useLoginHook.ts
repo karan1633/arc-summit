@@ -39,7 +39,7 @@ const useLoginHook = () => {
       router.push('/');
         toast.success('Login Successfully');
     } else {
-      toast.error('Invalid Credentials. Please try again.');
+      toast.error(tokenData?.error || "Invalid Credentials. Please try again.");
     }
   };
   return { passwordHidden, togglePasswordIcon, fetchToken };
