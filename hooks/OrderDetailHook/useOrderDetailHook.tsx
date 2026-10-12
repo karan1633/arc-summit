@@ -112,6 +112,7 @@ const useOrderDetailHook = () => {
         // Create params object for this product
         const params = {
           cust_name: editableCustomerName || customerName,
+          agent_name: localStorage.getItem('agent_name') || orderData.agent_name || '',
           item_code: itemCode,
           purity: reorderPurity,
           qty_size_list: qtySizeList,
