@@ -20,7 +20,7 @@ type Filters = {
   purity: SelectOption | null;
   product: SelectOption | null;
   factory: SelectOption | null;
-  user: SelectOption | null;
+  agent_name: SelectOption | null;
 };
 
 const useOrderListHook = () => {
@@ -40,7 +40,7 @@ const useOrderListHook = () => {
     purity: null,
     product: null,
     factory: null,
-    user: null
+    agent_name: null
   });
   const [filterOptions, setFilterOptions] = useState<{
     customers: SelectOption[];
@@ -48,14 +48,14 @@ const useOrderListHook = () => {
     order_ids: SelectOption[];
     products: SelectOption[];
     factories: SelectOption[];
-    users: SelectOption[];
+    agents: SelectOption[];
   }>({
     customers: [],
     purities: [],
     order_ids: [],
     products: [],
     factories: [],
-    users: []
+    agents: []
   });
 
 
@@ -89,7 +89,7 @@ const useOrderListHook = () => {
       order_id: filters.order_id?.value || '',
       product: filters.product?.value || '',
       factory: filters.factory?.value || '',
-      userFilter: filters.user?.value || '',
+      agent_name: filters.agent_name?.value || '',
     };
 
 
@@ -179,13 +179,13 @@ const useOrderListHook = () => {
             label: f,
             value: f,
           })),
-          users: (res?.data?.message?.users || []).map((u: any) => ({
-            label: u,
-            value: u,
+          agents: (res?.data?.message?.agents || []).map((a: string) => ({
+            label: a,
+            value: a,
           })),
         });
       } catch {
-        setFilterOptions({ customers: [], purities: [], order_ids: [], products: [], factories: [], users: [] });
+        setFilterOptions({ customers: [], purities: [], order_ids: [], products: [], factories: [], agents: [] });
       }
     };
 
