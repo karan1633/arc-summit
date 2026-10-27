@@ -95,10 +95,11 @@ const useProductListingFilterHook = () => {
       }
     }
 
+    const bomCodeString = query?.bom_code ? `&bom_code=${encodeURIComponent(query.bom_code as string)}` : '';
     if (filterString) {
-      url = `${url.split('?')[0]}?&page=1${filterString}`;
+      url = `${url.split('?')[0]}?&page=1${filterString}${bomCodeString}`;
     } else {
-      url = `${url.split('?')[0]}?page=1`;
+      url = `${url.split('?')[0]}?page=1${bomCodeString}`;
     }
 
     await router.push(url);

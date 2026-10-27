@@ -31,7 +31,10 @@ const fetchProductListingFromAPI = async (appName: any, query: any, token: any) 
   // Filter out unwanted parameters
   const modifiedParams = urlParams
     .split('&')
-    .filter((param) => !param.startsWith('page=') && !param.startsWith('category=') && !param.startsWith('sort_by='))
+    .filter(
+      (param) =>
+        !param.startsWith('page=') && !param.startsWith('category=') && !param.startsWith('sort_by=') && !param.startsWith('bom_code=')
+    )
     .join('&');
 
   // Initialize the additionalParams object
@@ -39,6 +42,8 @@ const fetchProductListingFromAPI = async (appName: any, query: any, token: any) 
     page_no,
     limit,
     ...(query.sort_by && { sort_by: query.sort_by }),
+    // Passed raw: executeGETAPI encodes it, so pre-encoding would double-encode spaces in codes like "CHO 416"
+    ...(query.url_params.bom_code && { bom_code: query.url_params.bom_code }),
     ...modifiedParams.split('&').reduce(
       (acc, param) => {
         const [key, value] = param.split('=');
