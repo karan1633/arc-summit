@@ -92,13 +92,14 @@ const useAddToCartHook = () => {
     }
   };
 
-  const updateCartData = async (custName: any, updatedPurity: any,selectedColor:any ,setPurity: any, setUpdatedColor:any) => {
+  const updateCartData = async (custName: any, updatedPurity: any,selectedColor:any ,setPurity: any, setUpdatedColor:any, agentName?: string) => {
     const localPurity = localStorage.getItem('localPurity');
     const reqBody = {
       purity: updatedPurity || localPurity,
       customer_name: custName,
       quotation_id: quotation_Id,
-      colour:selectedColor
+      colour:selectedColor,
+      ...(agentName && { agent_name: agentName }),
     };
     const updateCustName = await updateCartDataAPI(ARC_APP_CONFIG, reqBody, tokenFromStore?.token);
     if (updateCustName?.status === 200  && updateCustName.data.message.msg === "success") {
